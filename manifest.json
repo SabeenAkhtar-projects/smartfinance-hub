@@ -1,1 +1,15 @@
-{}
+{
+  "name": "SmartFinance Hub",
+  "short_name": "SFHub",
+  "description": "Learn • Save • Track • Grow — Financial empowerment platform by SabeenTech",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0F2C",
+  "theme_color": "#0A0F2C",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "categories": ["finance", "education", "productivity"]
+}
