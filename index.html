@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0A0F2C" />
+  <meta name="description" content="SmartFinance Hub – Learn, Save, Track, Grow. Your multilingual financial empowerment platform." />
+  <title>SmartFinance Hub | Learn • Save • Track • Grow</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PARTICLE CANVAS (background)
+═══════════════════════════════════════════ -->
+<canvas id="particles"></canvas>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="15" stroke="url(#lg1)" stroke-width="2"/>
+          <path d="M9 20 L13 14 L17 17 L21 11" stroke="#00C9A7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="21" cy="11" r="2.5" fill="#F5C518"/>
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00C9A7"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="logo-text">SmartFinance<span class="logo-accent"> Hub</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features" class="nav-link">Features</a></li>
+      <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+      <li><a href="pages/learn.html" class="nav-link">Learn</a></li>
+      <li><a href="pages/resources.html" class="nav-link">Resources</a></li>
+      <li><a href="pages/about.html" class="nav-link">About</a></li>
+      <li><a href="pages/contact.html" class="nav-link">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="ur">UR</button>
+        <button class="lang-btn" data-lang="ar">AR</button>
+      </div>
+      <a href="auth/login.html" class="btn-ghost">Sign In</a>
+      <a href="auth/signup.html" class="btn-primary">Get Started</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-container">
+    <div class="hero-left">
+      <div class="hero-badge reveal">
+        <span class="badge-dot"></span>
+        Financial Empowerment Platform
+      </div>
+      <h1 class="hero-title reveal">
+        Master Your<br/>
+        <span class="gradient-text">Financial Future</span><br/>
+        With Confidence
+      </h1>
+      <p class="hero-subtitle reveal">
+        Learn financial skills, build healthy money habits, track progress, and achieve real financial growth — in English, Urdu & Arabic.
+      </p>
+      <div class="hero-tagline reveal">
+        <span>Learn</span><span class="dot">•</span>
+        <span>Save</span><span class="dot">•</span>
+        <span>Track</span><span class="dot">•</span>
+        <span>Grow</span>
+      </div>
+      <div class="hero-cta reveal">
+        <a href="auth/signup.html" class="btn-primary btn-lg">Start for Free</a>
+        <a href="#how-it-works" class="btn-outline btn-lg">See How It Works</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="stat">
+          <span class="stat-num" data-target="15000">0</span><span class="stat-plus">+</span>
+          <span class="stat-label">Active Users</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="3">0</span>
+          <span class="stat-label">Languages</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-target="98">0</span><span class="stat-plus">%</span>
+          <span class="stat-label">Satisfaction</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right reveal">
+      <div class="hero-3d-scene">
+        <!-- Central Dashboard Card -->
+        <div class="card-3d card-main float-1">
+          <div class="card-header">
+            <span class="card-title">Financial Health Score</span>
+            <span class="score-badge">Excellent</span>
+          </div>
+          <div class="score-ring-wrap">
+            <svg class="score-ring" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#1a2040" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#scoreGrad)" stroke-width="10"
+                stroke-dasharray="314" stroke-dashoffset="50" stroke-linecap="round"
+                transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#6C63FF"/>
+                  <stop offset="100%" stop-color="#00C9A7"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="score-value">84</div>
+          </div>
+          <div class="card-footer-row">
+            <span class="up-arrow">↑ 12 pts this month</span>
+          </div>
+        </div>
+
+        <!-- Savings Goal Card -->
+        <div class="card-3d card-savings float-2">
+          <div class="mini-label">Savings Goal</div>
+          <div class="mini-goal">Emergency Fund</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width:68%"></div>
+            </div>
+            <span class="progress-pct">68%</span>
+          </div>
+          <div class="mini-amounts">
+            <span>PKR 34,000</span><span>/ 50,000</span>
+          </div>
+        </div>
+
+        <!-- Budget Card -->
+        <div class="card-3d card-budget float-3">
+          <div class="mini-label">This Month</div>
+          <div class="budget-row">
+            <span class="budget-dot green"></span>
+            <span>Income</span>
+            <span class="budget-val">PKR 65,000</span>
+          </div>
+          <div class="budget-row">
+            <span class="budget-dot red"></span>
+            <span>Spent</span>
+            <span class="budget-val">PKR 38,200</span>
+          </div>
+          <div class="budget-row saved">
+            <span class="budget-dot gold"></span>
+            <span>Saved</span>
+            <span class="budget-val gold-txt">PKR 26,800</span>
+          </div>
+        </div>
+
+        <!-- Learn Card -->
+        <div class="card-3d card-learn float-1" style="animation-delay:1s">
+          <div class="learn-icon">📚</div>
+          <div class="mini-goal">Today's Lesson</div>
+          <div class="mini-label">Compound Interest Basics</div>
+          <div class="learn-progress">
+            <div class="learn-bar" style="width:45%"></div>
+          </div>
+        </div>
+
+        <!-- Glow Orbs -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TRUSTED BY STRIP
+═══════════════════════════════════════════ -->
+<section class="trusted-strip">
+  <div class="strip-container">
+    <span class="strip-label">Built for</span>
+    <div class="strip-tags">
+      <span class="strip-tag">🎓 Students</span>
+      <span class="strip-tag">💼 Freelancers</span>
+      <span class="strip-tag">👩‍💼 Women Entrepreneurs</span>
+      <span class="strip-tag">🏠 Families</span>
+      <span class="strip-tag">📈 Young Professionals</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FEATURES SECTION
+═══════════════════════════════════════════ -->
+<section class="features" id="features">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Everything You Need</div>
+      <h2 class="section-title">One Platform. <span class="gradient-text">Full Control.</span></h2>
+      <p class="section-sub">Six powerful tools to take your financial life from chaotic to confident.</p>
+    </div>
+
+    <div class="features-grid">
+
+      <div class="feature-card reveal" data-delay="0">
+        <div class="feature-icon-wrap" style="--icon-color:#6C63FF">
+          <svg width="28" height="28" fill="none" viewBox="0 0 28 28">
+            <path d="M4 22 L10 14 L15 17 L20 9 L24 12" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="2" y="2" width="24" height="24" rx="6" stroke="#6C63FF" stroke-width="1.5" opacity="0.3"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Budget Planner</h3>
+        <p class="feature-desc">Track income and expenses by category. Get monthly summaries and spot spending patterns instantly.</p>
+        <a href="pages/budget.html" class="feature-link">Explore →</a>
+      </div>
+
+      <div class="feature-card reveal" data-delay="100">
+        <div class="feature-icon-wrap" style="--icon-color:#00C9A7">
+          <svg width="28" height="28" fill="none" viewBox="0 0 28 28">
+            <circle cx="14" cy="14" r="10" stroke="#00C9A7" stroke-width="2"/>
+            <path d="M14 8 L14 14 L18 16" stroke="#00C9A7" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Savings Goals</h3>
+        <p class="feature-desc">Set targets, track milestones, and celebrate wins. Whether it's a laptop or an emergency fund — you'll get there.</p>
+        <a href="pages/savings.html" class="feature-link">Explore →</a>
+      </div>
+
+      <div class="feature-card reveal" data-delay="200">
+        <div class="feature-icon-wrap" style="--icon-color:#F5C518">
+          <svg width="28" height="28" fill="none" viewBox="0 0 28 28">
+            <path d="M6 20 h16 M6 14 h10 M6 8 h14" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Financial Literacy Hub</h3>
+        <p class="feature-desc">Articles, quizzes, and short lessons on budgeting, saving, investing, and Islamic finance basics.</p>
+        <a href="pages/learn.html" class="feature-link">Explore →</a>
+      </div>
+
+      <div class="feature-card reveal" data-delay="0">
+        <div class="feature-icon-wrap" style="--icon-color:#FF6B6B">
+          <svg width="28" height="28" fill="none" viewBox="0 0 28 28">
+            <path d="M8 6 h12 a2 2 0 0 1 2 2 v14 a2 2 0 0 1 -2 2 H8 a2 2 0 0 1 -2 -2 V8 a2 2 0 0 1 2 -2z" stroke="#FF6B6B" stroke-width="1.8"/>
+            <path d="M10 12 h8 M10 16 h5" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Bookkeeping</h3>
+        <p class="feature-desc">Keep clean income and expense records. Generate profit/loss summaries and export reports anytime.</p>
+        <a href="pages/resources.html" class="feature-link">Explore →</a>
+      </div>
+
+      <div class="feature-card reveal card-highlight" data-delay="100">
+        <div class="feature-icon-wrap" style="--icon-color:#6C63FF">
+          <svg width="28" height="28" fill="none" viewBox="0 0 28 28">
+            <circle cx="14" cy="14" r="11" stroke="url(#fgrad)" stroke-width="2"/>
+            <path d="M14 7 v7 l4 4" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="fgrad"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00C9A7"/></linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="card-new-badge">Unique Feature</div>
+        <h3 class="feature-title">Financial Health Score</h3>
+        <p class="feature-desc">A gamified score calculated from your savings habits, budget consistency, and learning progress. Watch it grow.</p>
+        <a href="pages/score.html" class="feature-link">Explore →</a>
+      </div>
+
+      <div class="feature-card reveal" data-delay="200">
+        <div class="feature-icon-wrap" style="--icon-color:#00C9A7">
+          <svg width="28" height="28" fill="none" viewBox="0 0 28 28">
+            <circle cx="14" cy="10" r="5" stroke="#00C9A7" stroke-width="2"/>
+            <path d="M6 24 c0 -5 16 -5 16 0" stroke="#00C9A7" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">AI Financial Coach</h3>
+        <p class="feature-desc">Ask financial questions, get personalized spending and savings suggestions powered by AI — in your language.</p>
+        <a href="auth/signup.html" class="feature-link">Coming Soon →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════════ -->
+<section class="how-it-works" id="how-it-works">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Simple Process</div>
+      <h2 class="section-title">From Zero to <span class="gradient-text">Financial Clarity</span></h2>
+      <p class="section-sub">Start in minutes. See results in days.</p>
+    </div>
+
+    <div class="steps-wrap">
+      <div class="steps-line"></div>
+
+      <div class="step reveal" data-delay="0">
+        <div class="step-num">01</div>
+        <div class="step-card">
+          <div class="step-icon">🎯</div>
+          <h3>Create Your Account</h3>
+          <p>Sign up free. Choose your mode — Student, Freelancer, or Business. We personalize your experience.</p>
+        </div>
+      </div>
+
+      <div class="step reveal" data-delay="150">
+        <div class="step-num">02</div>
+        <div class="step-card">
+          <div class="step-icon">📊</div>
+          <h3>Set Up Your Budget</h3>
+          <p>Add your income and expenses. Create categories. Get an instant picture of where your money goes.</p>
+        </div>
+      </div>
+
+      <div class="step reveal" data-delay="300">
+        <div class="step-num">03</div>
+        <div class="step-card">
+          <div class="step-icon">🎯</div>
+          <h3>Set Savings Goals</h3>
+          <p>Name your goal, set a target amount, pick a deadline. We track progress automatically.</p>
+        </div>
+      </div>
+
+      <div class="step reveal" data-delay="450">
+        <div class="step-num">04</div>
+        <div class="step-card">
+          <div class="step-icon">📚</div>
+          <h3>Learn & Improve</h3>
+          <p>Read articles, take quizzes, and raise your Financial Health Score. Knowledge becomes habit.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FINANCIAL JOURNEY SECTION
+═══════════════════════════════════════════ -->
+<section class="journey" id="journey">
+  <div class="section-container">
+    <div class="journey-inner reveal">
+      <div class="journey-text">
+        <div class="section-eyebrow">Your Path Forward</div>
+        <h2 class="section-title">The SmartFinance <span class="gradient-text">Journey</span></h2>
+        <p class="journey-desc">Most people know they should save — but don't know where to start. SmartFinance Hub gives you the education AND the tools in the same place, in your own language.</p>
+        <ul class="journey-list">
+          <li><span class="check">✓</span> Multilingual from Day 1 — English, Urdu, Arabic</li>
+          <li><span class="check">✓</span> Beginner-friendly — no finance degree required</li>
+          <li><span class="check">✓</span> Mobile-first PWA — works offline, installs like an app</li>
+          <li><span class="check">✓</span> Privacy-first — your data stays yours</li>
+          <li><span class="check">✓</span> Free to start — no credit card needed</li>
+        </ul>
+        <a href="auth/signup.html" class="btn-primary btn-lg">Begin Your Journey</a>
+      </div>
+      <div class="journey-visual">
+        <div class="journey-flow">
+          <div class="jf-step active">
+            <div class="jf-icon">🎓</div>
+            <div class="jf-label">Learn</div>
+          </div>
+          <div class="jf-arrow">→</div>
+          <div class="jf-step">
+            <div class="jf-icon">💰</div>
+            <div class="jf-label">Budget</div>
+          </div>
+          <div class="jf-arrow">→</div>
+          <div class="jf-step">
+            <div class="jf-icon">🎯</div>
+            <div class="jf-label">Save</div>
+          </div>
+          <div class="jf-arrow">→</div>
+          <div class="jf-step">
+            <div class="jf-icon">📈</div>
+            <div class="jf-label">Grow</div>
+          </div>
+        </div>
+        <div class="journey-score-card">
+          <div class="jsc-label">Your Financial Health Score</div>
+          <div class="jsc-score-wrap">
+            <div class="jsc-bar-bg">
+              <div class="jsc-bar-fill animated-bar"></div>
+            </div>
+            <span class="jsc-num">84 / 100</span>
+          </div>
+          <div class="jsc-tags">
+            <span class="jsc-tag green">Budget ✓</span>
+            <span class="jsc-tag green">Savings ✓</span>
+            <span class="jsc-tag gold">Learning ↑</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════════ -->
+<section class="testimonials" id="testimonials">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Real People</div>
+      <h2 class="section-title">Stories That <span class="gradient-text">Inspire</span></h2>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testi-card reveal" data-delay="0">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I finally understand where my money goes each month. The budget planner changed everything for me as a student."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background: linear-gradient(135deg,#6C63FF,#00C9A7)">A</div>
+          <div>
+            <div class="testi-name">Ayesha R.</div>
+            <div class="testi-role">University Student, Lahore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal" data-delay="150">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"As a freelancer, tracking income was a nightmare. SmartFinance Hub made bookkeeping actually enjoyable."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background: linear-gradient(135deg,#F5C518,#FF6B6B)">U</div>
+          <div>
+            <div class="testi-name">Usman K.</div>
+            <div class="testi-role">Freelance Designer, Karachi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card reveal" data-delay="300">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The Urdu interface means my whole family can use it. We've saved more in 2 months than the whole last year."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background: linear-gradient(135deg,#00C9A7,#6C63FF)">S</div>
+          <div>
+            <div class="testi-name">Sara M.</div>
+            <div class="testi-role">Home Business Owner, Islamabad</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FAQ
+═══════════════════════════════════════════ -->
+<section class="faq" id="faq">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Got Questions?</div>
+      <h2 class="section-title">Frequently <span class="gradient-text">Asked</span></h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item reveal">
+        <button class="faq-question">Is SmartFinance Hub free to use?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">Yes. Core features including Budget Planner, Savings Goals, and the Financial Literacy Hub are completely free. Advanced features may be part of a future Pro plan.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-question">Is my financial data safe?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">Absolutely. We use password hashing, encrypted sessions, HTTPS, and strict database rules so no user can ever see another user's data. Your data is yours alone.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-question">Does it work in Urdu and Arabic?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">Yes. SmartFinance Hub is multilingual from day one — English, Urdu, and Arabic. You can switch languages from the top navigation bar at any time.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-question">Can I use it on my phone without internet?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">SmartFinance Hub is a Progressive Web App (PWA). You can install it to your home screen like a native app, and key features work offline.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-question">Who is this platform built for?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">Students, fresh graduates, young professionals, freelancers, women entrepreneurs, and families who want to learn financial skills and manage money better.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA SECTION
+═══════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="section-container">
+    <div class="cta-card reveal">
+      <div class="cta-orb cta-orb-1"></div>
+      <div class="cta-orb cta-orb-2"></div>
+      <div class="section-eyebrow" style="color:#00C9A7">Start Today — It's Free</div>
+      <h2 class="cta-title">Your Financial Transformation<br/><span class="gradient-text">Starts Right Now</span></h2>
+      <p class="cta-sub">Join thousands of students, freelancers, and families already on their way to financial freedom.</p>
+      <div class="cta-actions">
+        <a href="auth/signup.html" class="btn-primary btn-lg">Create Free Account</a>
+        <a href="pages/learn.html" class="btn-ghost btn-lg">Browse Lessons</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="15" stroke="url(#flg)" stroke-width="2"/>
+              <path d="M9 20 L13 14 L17 17 L21 11" stroke="#00C9A7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="21" cy="11" r="2.5" fill="#F5C518"/>
+              <defs><linearGradient id="flg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00C9A7"/></linearGradient></defs>
+            </svg>
+          </div>
+          <span class="logo-text">SmartFinance<span class="logo-accent"> Hub</span></span>
+        </a>
+        <p class="footer-tagline">Learn • Save • Track • Grow</p>
+        <p class="footer-brand-sub">A SabeenTech Product</p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="pages/learn.html">Financial Literacy</a></li>
+          <li><a href="pages/budget.html">Budget Planner</a></li>
+          <li><a href="pages/savings.html">Savings Goals</a></li>
+          <li><a href="pages/score.html">Health Score</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="pages/about.html">About</a></li>
+          <li><a href="pages/resources.html">Resources</a></li>
+          <li><a href="pages/contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+        <h4 style="margin-top:1.5rem">Language</h4>
+        <div class="footer-lang">
+          <button class="lang-btn active">EN</button>
+          <button class="lang-btn">UR</button>
+          <button class="lang-btn">AR</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 SabeenTech. All rights reserved.</span>
+      <span>SmartFinance Hub — Financial Empowerment for Everyone</span>
+    </div>
+  </div>
+</footer>
+
+<link rel="stylesheet" href="css/style.css" />
+<script src="js/animations.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>
