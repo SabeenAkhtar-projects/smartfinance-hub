@@ -1,1 +1,427 @@
-Sign up
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | SmartFinance Hub</title>
+  <link rel="manifest" href="../manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0A0F2C;--navy-3:#1a2040;--gold:#F5C518;--emerald:#00C9A7;--purple:#6C63FF;--red:#FF6B6B;--white:#FFFFFF;--muted:#8892b0;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);--grad-1:linear-gradient(135deg,#6C63FF,#00C9A7);--radius:16px;--font-main:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--transition:0.35s cubic-bezier(0.4,0,0.2,1);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--navy);color:var(--white);font-family:var(--font-body);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+    canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:1;}
+    .orb-1{width:300px;height:300px;background:rgba(0,201,167,0.12);top:-80px;left:-60px;}
+    .orb-2{width:250px;height:250px;background:rgba(108,99,255,0.12);bottom:-60px;right:-60px;}
+
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(10,15,44,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);}
+    .nav-container{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-text{font-family:var(--font-main);font-weight:700;font-size:1.1rem;color:var(--white);}
+    .logo-accent{color:var(--emerald);}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;display:flex;align-items:center;gap:6px;transition:var(--transition);}
+    .nav-back:hover{color:var(--white);}
+
+    .auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:100px 24px 48px;position:relative;z-index:2;}
+    .auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;max-width:1020px;width:100%;}
+
+    .auth-left{display:flex;flex-direction:column;gap:24px;position:sticky;top:110px;}
+    .auth-eyebrow{display:inline-block;color:var(--emerald);font-family:var(--font-main);font-weight:600;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;}
+    .auth-title{font-family:var(--font-main);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;line-height:1.15;}
+    .gradient-text{background:var(--grad-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .auth-desc{color:var(--muted);font-size:0.92rem;line-height:1.7;}
+
+    /* Plan Cards */
+    .plans{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+    .plan-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:var(--transition);}
+    .plan-card:hover,.plan-card.selected{border-color:var(--purple);background:rgba(108,99,255,0.08);}
+    .plan-card.selected .plan-radio{background:var(--purple);border-color:var(--purple);}
+    .plan-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--card-border);flex-shrink:0;transition:var(--transition);display:flex;align-items:center;justify-content:center;}
+    .plan-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:white;display:none;}
+    .plan-card.selected .plan-radio::after{display:block;}
+    .plan-icon{font-size:1.4rem;flex-shrink:0;}
+    .plan-name{font-family:var(--font-main);font-weight:700;font-size:0.88rem;}
+    .plan-desc{color:var(--muted);font-size:0.75rem;margin-top:2px;}
+
+    /* Form Card */
+    .auth-card{background:rgba(255,255,255,0.04);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:36px 32px;}
+    .card-title{font-family:var(--font-main);font-size:1.35rem;font-weight:700;margin-bottom:6px;}
+    .card-sub{color:var(--muted);font-size:0.84rem;margin-bottom:28px;}
+    .card-sub a{color:var(--purple);text-decoration:none;font-weight:600;}
+    .card-sub a:hover{color:var(--emerald);}
+
+    /* Steps indicator */
+    .steps-indicator{display:flex;align-items:center;gap:0;margin-bottom:28px;}
+    .step-dot{display:flex;align-items:center;gap:0;flex:1;}
+    .step-num{width:30px;height:30px;border-radius:50%;border:2px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--muted);flex-shrink:0;transition:var(--transition);}
+    .step-num.active{border-color:var(--purple);background:var(--purple);color:white;}
+    .step-num.done{border-color:var(--emerald);background:var(--emerald);color:white;}
+    .step-line{flex:1;height:2px;background:var(--card-border);transition:var(--transition);}
+    .step-line.done{background:var(--emerald);}
+
+    .form-group{margin-bottom:18px;}
+    .form-label{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:7px;}
+    .input-wrap{position:relative;}
+    .input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none;}
+    .form-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--white);font-size:0.88rem;font-family:var(--font-body);padding:12px 16px 12px 42px;outline:none;transition:var(--transition);}
+    .form-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
+    .form-input::placeholder{color:#4a5568;}
+    .form-input.no-icon{padding-left:16px;}
+    .pass-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.82rem;transition:var(--transition);}
+    .pass-toggle:hover{color:white;}
+
+    .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+    /* Password strength */
+    .strength-wrap{margin-top:8px;}
+    .strength-bar{display:flex;gap:4px;margin-bottom:4px;}
+    .strength-seg{flex:1;height:3px;border-radius:2px;background:var(--card-border);transition:var(--transition);}
+    .strength-seg.weak{background:#FF6B6B;}
+    .strength-seg.fair{background:var(--gold);}
+    .strength-seg.good{background:var(--emerald);}
+    .strength-seg.strong{background:var(--purple);}
+    .strength-label{font-size:0.72rem;color:var(--muted);}
+
+    /* Terms */
+    .terms-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:22px;color:var(--muted);font-size:0.82rem;line-height:1.5;cursor:pointer;}
+    .terms-check input{accent-color:var(--purple);width:15px;height:15px;margin-top:2px;flex-shrink:0;}
+    .terms-check a{color:var(--purple);text-decoration:none;}
+    .terms-check a:hover{color:var(--emerald);}
+
+    .btn-submit{width:100%;background:var(--grad-1);color:var(--white);border:none;border-radius:50px;font-family:var(--font-main);font-weight:700;font-size:1rem;padding:14px;cursor:pointer;transition:var(--transition);}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(108,99,255,0.4);}
+    .btn-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+    .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:0.75rem;}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--card-border);}
+
+    .btn-google{width:100%;background:var(--card-bg);border:1px solid var(--card-border);color:var(--white);border-radius:50px;font-family:var(--font-body);font-weight:600;font-size:0.88rem;padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:var(--transition);}
+    .btn-google:hover{border-color:rgba(255,255,255,0.2);}
+
+    .form-msg{padding:11px 16px;border-radius:10px;font-size:0.82rem;margin-bottom:18px;display:none;}
+    .form-msg.error{background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#ff9999;}
+    .form-msg.success{background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:var(--emerald);}
+    .form-msg.show{display:block;}
+
+    .auth-footer{text-align:center;color:var(--muted);font-size:0.75rem;padding:20px;position:relative;z-index:2;}
+
+    select.form-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+    select.form-input option{background:#111827;color:white;}
+
+    @media(max-width:768px){
+      .auth-grid{grid-template-columns:1fr;}
+      .auth-left{display:none;}
+      .auth-card{padding:28px 20px;}
+      .form-row-2{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" stroke="url(#nlg2)" stroke-width="2"/>
+        <path d="M9 20 L13 14 L17 17 L21 11" stroke="#00C9A7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="21" cy="11" r="2.5" fill="#F5C518"/>
+        <defs><linearGradient id="nlg2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00C9A7"/></linearGradient></defs>
+      </svg>
+      <span class="logo-text">SmartFinance<span class="logo-accent"> Hub</span></span>
+    </a>
+    <a href="../index.html" class="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<!-- AUTH CONTENT -->
+<div class="auth-wrap">
+  <div class="auth-grid">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <span class="auth-eyebrow">Get Started Free</span>
+      <h1 class="auth-title">Choose Your<br/><span class="gradient-text">Financial Path</span></h1>
+      <p class="auth-desc">Tell us who you are so we can personalize your dashboard, lessons, and tools from day one.</p>
+
+      <div class="plans">
+        <div class="plan-card selected" data-plan="student" onclick="selectPlan(this)">
+          <div class="plan-radio"></div>
+          <div class="plan-icon">🎓</div>
+          <div>
+            <div class="plan-name">Student</div>
+            <div class="plan-desc">Learning basics, managing pocket money</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="freelancer" onclick="selectPlan(this)">
+          <div class="plan-radio"></div>
+          <div class="plan-icon">💼</div>
+          <div>
+            <div class="plan-name">Freelancer</div>
+            <div class="plan-desc">Variable income, project-based earnings</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="family" onclick="selectPlan(this)">
+          <div class="plan-radio"></div>
+          <div class="plan-icon">🏠</div>
+          <div>
+            <div class="plan-name">Family / Individual</div>
+            <div class="plan-desc">Household budgeting, savings goals</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="business" onclick="selectPlan(this)">
+          <div class="plan-radio"></div>
+          <div class="plan-icon">📈</div>
+          <div>
+            <div class="plan-name">Small Business</div>
+            <div class="plan-desc">Income tracking, bookkeeping basics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Signup Form -->
+    <div class="auth-card">
+      <h2 class="card-title">Create Your Account</h2>
+      <p class="card-sub">Already have an account? <a href="login.html">Sign in →</a></p>
+
+      <!-- Steps -->
+      <div class="steps-indicator">
+        <div class="step-dot">
+          <div class="step-num active" id="s1">1</div>
+          <div class="step-line" id="l1"></div>
+        </div>
+        <div class="step-dot">
+          <div class="step-num" id="s2">2</div>
+          <div class="step-line" id="l2"></div>
+        </div>
+        <div class="step-dot">
+          <div class="step-num" id="s3">3</div>
+          <div class="step-line" style="background:transparent"></div>
+        </div>
+      </div>
+
+      <div class="form-msg" id="formMsg"></div>
+
+      <form id="signupForm" novalidate>
+
+        <!-- STEP 1: Personal Info -->
+        <div id="step1">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <div class="input-wrap">
+                <span class="input-icon">👤</span>
+                <input type="text" class="form-input" id="fname" placeholder="Sabeen" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <div class="input-wrap">
+                <span class="input-icon">👤</span>
+                <input type="text" class="form-input" id="lname" placeholder="Akhtar" required />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input type="email" class="form-input" id="email" placeholder="you@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone (Optional)</label>
+            <div class="input-wrap">
+              <span class="input-icon">📱</span>
+              <input type="tel" class="form-input" id="phone" placeholder="+92 300 0000000" />
+            </div>
+          </div>
+          <button type="button" class="btn-submit" onclick="goStep(2)">Continue →</button>
+        </div>
+
+        <!-- STEP 2: Account Setup -->
+        <div id="step2" style="display:none">
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <div class="input-wrap">
+              <span class="input-icon">@</span>
+              <input type="text" class="form-input" id="username" placeholder="sabeen_akhtar" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" class="form-input" id="password" placeholder="Min. 8 characters" required oninput="checkStrength(this.value)" />
+              <button type="button" class="pass-toggle" onclick="togglePass('password',this)">Show</button>
+            </div>
+            <div class="strength-wrap">
+              <div class="strength-bar">
+                <div class="strength-seg" id="seg1"></div>
+                <div class="strength-seg" id="seg2"></div>
+                <div class="strength-seg" id="seg3"></div>
+                <div class="strength-seg" id="seg4"></div>
+              </div>
+              <span class="strength-label" id="strengthLabel">Enter a password</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" class="form-input" id="confirm" placeholder="Repeat password" required />
+              <button type="button" class="pass-toggle" onclick="togglePass('confirm',this)">Show</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preferred Language</label>
+            <select class="form-input no-icon" id="lang" style="padding-left:16px">
+              <option value="en">🌐 English</option>
+              <option value="ur">🇵🇰 Urdu</option>
+              <option value="ar">🌙 Arabic</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button type="button" class="btn-submit" style="background:rgba(255,255,255,0.06);flex:0.4" onclick="goStep(1)">← Back</button>
+            <button type="button" class="btn-submit" style="flex:1" onclick="goStep(3)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Confirm & Submit -->
+        <div id="step3" style="display:none">
+          <div style="background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.2);border-radius:12px;padding:18px;margin-bottom:20px;">
+            <div style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Account Summary</div>
+            <div id="summaryContent" style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;"></div>
+          </div>
+          <label class="terms-check">
+            <input type="checkbox" id="terms" />
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of SmartFinance Hub.
+          </label>
+          <div style="display:flex;gap:10px">
+            <button type="button" class="btn-submit" style="background:rgba(255,255,255,0.06);flex:0.4" onclick="goStep(2)">← Back</button>
+            <button type="submit" class="btn-submit" id="submitBtn" style="flex:1">Create Account 🚀</button>
+          </div>
+          <div class="divider">or sign up with</div>
+          <button type="button" class="btn-google">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.29-8.16 2.29-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Continue with Google
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer class="auth-footer">© 2025 SabeenTech · SmartFinance Hub · All rights reserved</footer>
+
+<script>
+// Particles
+(function(){const c=document.getElementById('particles'),ctx=c.getContext('2d');let W,H,p=[];function r(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}r();window.addEventListener('resize',r);const CL=['rgba(108,99,255,','rgba(0,201,167,'];class P{constructor(){this.re();}re(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.5+.4;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.a=Math.random()*.35+.1;this.c=CL[Math.floor(Math.random()*CL.length)];}up(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.re();}dr(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=this.c+this.a+')';ctx.fill();}}
+for(let i=0;i<55;i++)p.push(new P());function loop(){ctx.clearRect(0,0,W,H);p.forEach(x=>{x.up();x.dr();});requestAnimationFrame(loop);}loop();})();
+
+let currentStep=1;
+let selectedPlan='student';
+
+function selectPlan(el){
+  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPlan=el.dataset.plan;
+}
+
+function goStep(n){
+  const msg=document.getElementById('formMsg');
+  msg.className='form-msg';
+
+  if(n===2){
+    const fn=document.getElementById('fname').value.trim();
+    const ln=document.getElementById('lname').value.trim();
+    const em=document.getElementById('email').value.trim();
+    if(!fn||!ln){msg.className='form-msg error show';msg.textContent='Please enter your first and last name.';return;}
+    if(!em||!em.includes('@')){msg.className='form-msg error show';msg.textContent='Please enter a valid email address.';return;}
+  }
+  if(n===3){
+    const un=document.getElementById('username').value.trim();
+    const pw=document.getElementById('password').value;
+    const cf=document.getElementById('confirm').value;
+    if(!un){msg.className='form-msg error show';msg.textContent='Please choose a username.';return;}
+    if(pw.length<8){msg.className='form-msg error show';msg.textContent='Password must be at least 8 characters.';return;}
+    if(pw!==cf){msg.className='form-msg error show';msg.textContent='Passwords do not match.';return;}
+    buildSummary();
+  }
+
+  ['step1','step2','step3'].forEach((id,i)=>{
+    document.getElementById(id).style.display=i+1===n?'block':'none';
+  });
+  ['s1','s2','s3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(i+1<n){el.className='step-num done';el.textContent='✓';}
+    else if(i+1===n){el.className='step-num active';el.textContent=i+1;}
+    else{el.className='step-num';el.textContent=i+1;}
+  });
+  ['l1','l2'].forEach((id,i)=>{
+    document.getElementById(id).className='step-line'+(i+1<n?' done':'');
+  });
+  currentStep=n;
+}
+
+function buildSummary(){
+  const planLabels={student:'🎓 Student',freelancer:'💼 Freelancer',family:'🏠 Family / Individual',business:'📈 Small Business'};
+  const langLabels={en:'English',ur:'Urdu',ar:'Arabic'};
+  const rows=[
+    ['Name', document.getElementById('fname').value+' '+document.getElementById('lname').value],
+    ['Email', document.getElementById('email').value],
+    ['Username', '@'+document.getElementById('username').value],
+    ['Profile', planLabels[selectedPlan]],
+    ['Language', langLabels[document.getElementById('lang').value]],
+  ];
+  document.getElementById('summaryContent').innerHTML=rows.map(([k,v])=>
+    `<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">${k}</span><span style="font-weight:600">${v}</span></div>`
+  ).join('');
+}
+
+function checkStrength(v){
+  const segs=[document.getElementById('seg1'),document.getElementById('seg2'),document.getElementById('seg3'),document.getElementById('seg4')];
+  const label=document.getElementById('strengthLabel');
+  let score=0;
+  if(v.length>=8)score++;
+  if(/[A-Z]/.test(v))score++;
+  if(/[0-9]/.test(v))score++;
+  if(/[^A-Za-z0-9]/.test(v))score++;
+  const classes=['','weak','fair','good','strong'];
+  const labels=['Enter a password','Weak — add length','Fair — add numbers','Good — add symbols','Strong ✓'];
+  segs.forEach((s,i)=>{s.className='strength-seg'+(i<score?' '+classes[score]:'');});
+  label.textContent=labels[score];
+}
+
+function togglePass(id,btn){
+  const inp=document.getElementById(id);
+  if(inp.type==='password'){inp.type='text';btn.textContent='Hide';}
+  else{inp.type='password';btn.textContent='Show';}
+}
+
+document.getElementById('signupForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const msg=document.getElementById('formMsg');
+  const btn=document.getElementById('submitBtn');
+  if(!document.getElementById('terms').checked){
+    msg.className='form-msg error show';
+    msg.textContent='Please agree to the Terms of Service to continue.';return;
+  }
+  btn.textContent='Creating account...';btn.disabled=true;
+  setTimeout(()=>{
+    msg.className='form-msg success show';
+    msg.textContent='🎉 Account created! Welcome to SmartFinance Hub!';
+    setTimeout(()=>{window.location.href='../index.html';},1800);
+  },1400);
+});
+</script>
+</body>
+</html>
+
+You are out of free me
