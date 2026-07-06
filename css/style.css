@@ -856,42 +856,36 @@ body {
 }
 .faq-item.open .faq-answer { max-height: 200px; padding: 0 24px 20px; }
 
-/* ══════════════════════════════
-   CTA
-══════════════════════════════ */
-.cta-section { position: relative; z-index: 2; padding: 0 24px 100px; }
 .cta-card {
   max-width: 860px;
   margin: 0 auto;
   background: rgba(108,99,255,0.08);
   border: 1px solid rgba(108,99,255,0.3);
   border-radius: 28px;
-  padding: 72px 48px;
-  text-align: center;
+  
+  /* Cleaned up padding and added Flexbox for perfect vertical/horizontal centering */
+  padding: 64px 48px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
   position: relative;
   overflow: hidden;
 }
-.cta-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
+
+/* 
+   FIX: Changed from "> *" to specifically target the content container. 
+   This stops absolute/relative conflicts with the background orbs.
+*/
+.cta-content { 
+  position: relative; 
+  z-index: 1; 
+  width: 100%;
 }
-.cta-orb-1 { width: 300px; height: 300px; background: rgba(108,99,255,0.2); top: -100px; left: -80px; }
-.cta-orb-2 { width: 200px; height: 200px; background: rgba(0,201,167,0.15); bottom: -60px; right: -40px; }
-.cta-title {
-  font-family: var(--font-main);
-  font-size: clamp(1.8rem,4vw,2.6rem);
-  font-weight: 800;
-  line-height: 1.2;
-  margin: 16px 0;
-}
-.cta-sub { color: var(--muted); font-size: 1rem; margin-bottom: 36px; }
-.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.cta-card > * { position: relative; z-index: 1; }
 
 /* ══════════════════════════════
-   FOOTER
+   FOOTER       
 ══════════════════════════════ */
 .footer {
   position: relative;
