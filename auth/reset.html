@@ -1,177 +1,414 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Forgot Password — SmartFinance Hub</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password | SmartFinance Hub</title>
+  <link rel="manifest" href="../manifest.json" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      font-family:'Inter',sans-serif;
-      min-height:100vh;
-      background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%);
-      display:flex;align-items:center;justify-content:center;padding:20px;
+    :root{--navy:#0A0F2C;--navy-3:#1a2040;--gold:#F5C518;--emerald:#00C9A7;--purple:#6C63FF;--red:#FF6B6B;--white:#FFFFFF;--muted:#8892b0;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);--grad-1:linear-gradient(135deg,#6C63FF,#00C9A7);--font-main:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--transition:0.35s cubic-bezier(0.4,0,0.2,1);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--navy);color:var(--white);font-family:var(--font-body);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+    canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:1;}
+    .orb-1{width:320px;height:320px;background:rgba(108,99,255,0.13);top:-100px;right:-80px;}
+    .orb-2{width:220px;height:220px;background:rgba(0,201,167,0.1);bottom:-60px;left:-60px;}
+
+    /* NAVBAR */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rgba(10,15,44,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);}
+    .nav-container{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .logo-text{font-family:var(--font-main);font-weight:700;font-size:1.1rem;color:var(--white);}
+    .logo-accent{color:var(--emerald);}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:var(--transition);}
+    .nav-back:hover{color:var(--white);}
+
+    /* MAIN WRAP */
+    .auth-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:110px 24px 48px;position:relative;z-index:2;}
+
+    /* CARD */
+    .reset-card{width:100%;max-width:440px;background:rgba(255,255,255,0.04);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:44px 36px;}
+
+    /* ICON TOP */
+    .card-icon{width:64px;height:64px;border-radius:18px;background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.25);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 24px;}
+
+    .card-title{font-family:var(--font-main);font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:8px;}
+    .card-sub{color:var(--muted);font-size:0.85rem;line-height:1.6;text-align:center;margin-bottom:28px;}
+    .card-sub a{color:var(--purple);text-decoration:none;font-weight:600;}
+    .card-sub a:hover{color:var(--emerald);}
+    .gradient-text{background:var(--grad-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+    /* STEPS */
+    .reset-steps{display:flex;justify-content:center;gap:8px;margin-bottom:28px;}
+    .rst-step{display:flex;flex-direction:column;align-items:center;gap:4px;}
+    .rst-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--card-border);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--muted);transition:var(--transition);}
+    .rst-dot.active{border-color:var(--purple);background:var(--purple);color:white;}
+    .rst-dot.done{border-color:var(--emerald);background:var(--emerald);color:white;}
+    .rst-label{font-size:0.62rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;}
+    .rst-line{width:40px;height:2px;background:var(--card-border);margin-top:14px;transition:var(--transition);}
+    .rst-line.done{background:var(--emerald);}
+
+    /* FORM */
+    .form-group{margin-bottom:18px;}
+    .form-label{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:7px;}
+    .input-wrap{position:relative;}
+    .input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none;}
+    .form-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:var(--white);font-size:0.9rem;font-family:var(--font-body);padding:13px 16px 13px 42px;outline:none;transition:var(--transition);}
+    .form-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
+    .form-input::placeholder{color:#4a5568;}
+
+    /* OTP boxes */
+    .otp-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:22px;}
+    .otp-box{width:52px;height:58px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:var(--white);font-size:1.4rem;font-weight:700;font-family:var(--font-main);text-align:center;outline:none;transition:var(--transition);}
+    .otp-box:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
+
+    /* Pass toggle */
+    .pass-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.82rem;transition:var(--transition);}
+    .pass-toggle:hover{color:white;}
+
+    /* Strength */
+    .strength-wrap{margin-top:8px;}
+    .strength-bar{display:flex;gap:4px;margin-bottom:4px;}
+    .strength-seg{flex:1;height:3px;border-radius:2px;background:var(--card-border);transition:var(--transition);}
+    .strength-seg.weak{background:#FF6B6B;}
+    .strength-seg.fair{background:var(--gold);}
+    .strength-seg.good{background:var(--emerald);}
+    .strength-seg.strong{background:var(--purple);}
+    .strength-label{font-size:0.72rem;color:var(--muted);}
+
+    /* Buttons */
+    .btn-submit{width:100%;background:var(--grad-1);color:var(--white);border:none;border-radius:50px;font-family:var(--font-main);font-weight:700;font-size:1rem;padding:14px;cursor:pointer;transition:var(--transition);margin-top:4px;}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(108,99,255,0.4);}
+    .btn-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+    .btn-resend{background:none;border:none;color:var(--purple);font-size:0.83rem;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:var(--transition);padding:0;}
+    .btn-resend:hover{color:var(--emerald);}
+    .btn-resend:disabled{color:var(--muted);cursor:not-allowed;}
+
+    /* Msg */
+    .form-msg{padding:11px 16px;border-radius:10px;font-size:0.83rem;margin-bottom:16px;display:none;}
+    .form-msg.error{background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#ff9999;}
+    .form-msg.success{background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.3);color:var(--emerald);}
+    .form-msg.info{background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);color:#c0b9ff;}
+    .form-msg.show{display:block;}
+
+    /* Resend row */
+    .resend-row{text-align:center;margin-top:16px;font-size:0.82rem;color:var(--muted);}
+
+    /* Success screen */
+    .success-screen{text-align:center;display:none;}
+    .success-icon{font-size:3.5rem;margin-bottom:16px;}
+    .success-title{font-family:var(--font-main);font-size:1.4rem;font-weight:800;margin-bottom:10px;}
+    .success-desc{color:var(--muted);font-size:0.88rem;line-height:1.6;margin-bottom:28px;}
+    .btn-go{display:inline-block;background:var(--grad-1);color:white;text-decoration:none;padding:13px 36px;border-radius:50px;font-family:var(--font-main);font-weight:700;font-size:0.95rem;transition:var(--transition);}
+    .btn-go:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(108,99,255,0.4);}
+
+    /* Footer */
+    .auth-footer{text-align:center;color:var(--muted);font-size:0.75rem;padding:20px;position:relative;z-index:2;}
+
+    @media(max-width:480px){
+      .reset-card{padding:32px 20px;}
+      .otp-box{width:42px;height:50px;font-size:1.2rem;}
+      .rst-line{width:24px;}
     }
-    .auth-container{width:100%;max-width:440px}
-    .auth-logo{text-align:center;margin-bottom:32px}
-    .auth-logo a{text-decoration:none;display:inline-flex;align-items:center;gap:10px}
-    .logo-icon{
-      width:44px;height:44px;
-      background:linear-gradient(135deg,#6366f1,#8b5cf6);
-      border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;
-    }
-    .logo-text{font-size:22px;font-weight:700;color:#fff}
-    .logo-text span{color:#6366f1}
-    .auth-card{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:20px;padding:40px;
-      backdrop-filter:blur(20px);
-    }
-    .icon-circle{
-      width:64px;height:64px;
-      background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.2));
-      border:1px solid rgba(99,102,241,0.4);
-      border-radius:50%;display:flex;align-items:center;justify-content:center;
-      font-size:28px;margin:0 auto 20px;
-    }
-    .auth-title{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;text-align:center}
-    .auth-subtitle{font-size:14px;color:#94a3b8;text-align:center;margin-bottom:28px;line-height:1.6}
-    .form-group{margin-bottom:20px}
-    .form-group label{display:block;font-size:14px;font-weight:500;color:#cbd5e1;margin-bottom:8px}
-    .form-group input{
-      width:100%;padding:12px 16px;
-      background:rgba(255,255,255,0.07);
-      border:1px solid rgba(255,255,255,0.12);
-      border-radius:10px;color:#fff;font-size:15px;
-      font-family:'Inter',sans-serif;
-      transition:border-color 0.2s,background 0.2s;outline:none;
-    }
-    .form-group input:focus{border-color:#6366f1;background:rgba(99,102,241,0.08)}
-    .form-group input::placeholder{color:#475569}
-    .btn-primary{
-      width:100%;padding:14px;
-      background:linear-gradient(135deg,#6366f1,#8b5cf6);
-      color:#fff;border:none;border-radius:10px;
-      font-size:16px;font-weight:600;cursor:pointer;
-      transition:opacity 0.2s,transform 0.1s;
-      font-family:'Inter',sans-serif;margin-bottom:20px;
-    }
-    .btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
-    .btn-secondary{
-      width:100%;padding:13px;
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.15);
-      border-radius:10px;color:#94a3b8;
-      font-size:15px;font-weight:500;cursor:pointer;
-      font-family:'Inter',sans-serif;
-      transition:background 0.2s,color 0.2s;
-      text-decoration:none;display:block;text-align:center;
-    }
-    .btn-secondary:hover{background:rgba(255,255,255,0.05);color:#fff}
-    .error-message{
-      background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
-      color:#f87171;padding:10px 14px;border-radius:8px;
-      font-size:13px;margin-bottom:16px;display:none;
-    }
-    .success-box{
-      background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
-      border-radius:12px;padding:24px;text-align:center;display:none;
-    }
-    .success-box .success-icon{font-size:40px;margin-bottom:12px}
-    .success-box h3{color:#4ade80;font-size:18px;font-weight:600;margin-bottom:8px}
-    .success-box p{color:#86efac;font-size:14px;line-height:1.6}
-    .tips{
-      margin-top:16px;padding:16px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.07);
-      border-radius:10px;
-    }
-    .tips p{font-size:12px;color:#64748b;margin-bottom:6px}
-    .tips ul{list-style:none;padding:0}
-    .tips ul li{font-size:12px;color:#475569;padding:2px 0;padding-left:14px;position:relative}
-    .tips ul li::before{content:'•';position:absolute;left:0;color:#6366f1}
-    .back-link{text-align:center;margin-top:20px;font-size:14px;color:#64748b}
-    .back-link a{color:#6366f1;text-decoration:none;font-weight:600}
-    .back-link a:hover{color:#818cf8}
   </style>
 </head>
 <body>
-  <div class="auth-container">
-    <div class="auth-logo">
-      <a href="../index.html">
-        <div class="logo-icon">💰</div>
-        <span class="logo-text">SmartFinance <span>Hub</span></span>
-      </a>
-    </div>
-    <div class="auth-card">
-      <div class="icon-circle">🔑</div>
-      <h1 class="auth-title">Forgot Password?</h1>
-      <p class="auth-subtitle">No worries! Enter your email and we'll send you a reset link.</p>
+<canvas id="particles"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-      <div class="error-message" id="errorMsg"></div>
-
-      <!-- Form (shown first) -->
-      <div id="formSection">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
-        </div>
-        <button class="btn-primary" onclick="handleReset()">Send Reset Link</button>
-        <a href="login.html" class="btn-secondary">← Back to Login</a>
-
-        <div class="tips">
-          <p><strong style="color:#64748b">💡 Tips:</strong></p>
-          <ul>
-            <li>Check your spam or junk folder</li>
-            <li>Make sure you used the right email</li>
-            <li>Link expires after 30 minutes</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Success box (shown after submit) -->
-      <div class="success-box" id="successBox">
-        <div class="success-icon">📬</div>
-        <h3>Check Your Inbox!</h3>
-        <p>A password reset link has been sent to <strong id="sentEmail" style="color:#4ade80"></strong></p>
-        <p style="margin-top:8px;font-size:13px;color:#64748b">Didn't get it? Check your spam folder or try again.</p>
-      </div>
-
-      <div class="back-link">
-        Remember your password? <a href="login.html">Sign in</a>
-      </div>
-    </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="15" stroke="url(#rlg)" stroke-width="2"/>
+        <path d="M9 20 L13 14 L17 17 L21 11" stroke="#00C9A7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="21" cy="11" r="2.5" fill="#F5C518"/>
+        <defs><linearGradient id="rlg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00C9A7"/></linearGradient></defs>
+      </svg>
+      <span class="logo-text">SmartFinance<span class="logo-accent"> Hub</span></span>
+    </a>
+    <a href="login.html" class="nav-back">← Back to Sign In</a>
   </div>
+</nav>
 
-  <script>
-    function handleReset() {
-      const email = document.getElementById('email').value.trim();
-      const errorMsg = document.getElementById('errorMsg');
-      errorMsg.style.display = 'none';
+<!-- MAIN -->
+<div class="auth-wrap">
+  <div class="reset-card">
 
-      if (!email) {
-        errorMsg.textContent = 'Please enter your email address.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-      if (!email.includes('@') || !email.includes('.')) {
-        errorMsg.textContent = 'Please enter a valid email address.';
-        errorMsg.style.display = 'block';
-        return;
-      }
+    <!-- STEP INDICATORS -->
+    <div class="reset-steps">
+      <div class="rst-step">
+        <div class="rst-dot active" id="d1">1</div>
+        <div class="rst-label">Email</div>
+      </div>
+      <div class="rst-line" id="rl1"></div>
+      <div class="rst-step">
+        <div class="rst-dot" id="d2">2</div>
+        <div class="rst-label">OTP</div>
+      </div>
+      <div class="rst-line" id="rl2"></div>
+      <div class="rst-step">
+        <div class="rst-dot" id="d3">3</div>
+        <div class="rst-label">Password</div>
+      </div>
+    </div>
 
-      // Show success (backend email will be wired in Day 5)
-      document.getElementById('sentEmail').textContent = email;
-      document.getElementById('formSection').style.display = 'none';
-      document.getElementById('successBox').style.display = 'block';
+    <!-- ── PANEL 1: Enter Email ── -->
+    <div id="panel1">
+      <div class="card-icon">🔑</div>
+      <h2 class="card-title">Forgot <span class="gradient-text">Password?</span></h2>
+      <p class="card-sub">No worries. Enter your registered email and we'll send you a 6-digit OTP to reset your password.</p>
+
+      <div class="form-msg" id="msg1"></div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" class="form-input" id="resetEmail" placeholder="you@example.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="sendOTP()">Send Reset Code</button>
+
+      <p style="text-align:center;margin-top:20px;font-size:0.83rem;color:var(--muted);">
+        Remember your password? <a href="login.html" style="color:var(--purple);font-weight:600;text-decoration:none;">Sign In</a>
+      </p>
+    </div>
+
+    <!-- ── PANEL 2: Enter OTP ── -->
+    <div id="panel2" style="display:none">
+      <div class="card-icon">📨</div>
+      <h2 class="card-title">Enter the <span class="gradient-text">OTP Code</span></h2>
+      <p class="card-sub" id="otpDesc">We sent a 6-digit code to your email. Enter it below.</p>
+
+      <div class="form-msg" id="msg2"></div>
+
+      <div class="otp-wrap">
+        <input class="otp-box" type="text" maxlength="1" id="o1" oninput="otpMove(this,'o2')" onkeydown="otpBack(event,this,null)" />
+        <input class="otp-box" type="text" maxlength="1" id="o2" oninput="otpMove(this,'o3')" onkeydown="otpBack(event,this,'o1')" />
+        <input class="otp-box" type="text" maxlength="1" id="o3" oninput="otpMove(this,'o4')" onkeydown="otpBack(event,this,'o2')" />
+        <input class="otp-box" type="text" maxlength="1" id="o4" oninput="otpMove(this,'o5')" onkeydown="otpBack(event,this,'o3')" />
+        <input class="otp-box" type="text" maxlength="1" id="o5" oninput="otpMove(this,'o6')" onkeydown="otpBack(event,this,'o4')" />
+        <input class="otp-box" type="text" maxlength="1" id="o6" oninput="otpMove(this,null)"  onkeydown="otpBack(event,this,'o5')" />
+      </div>
+
+      <button class="btn-submit" onclick="verifyOTP()">Verify Code</button>
+
+      <div class="resend-row">
+        Didn't receive it?
+        <button class="btn-resend" id="resendBtn" onclick="resendOTP()">Resend Code</button>
+        <span id="timerTxt" style="display:none;color:var(--muted)"> in <span id="timerNum">30</span>s</span>
+      </div>
+    </div>
+
+    <!-- ── PANEL 3: New Password ── -->
+    <div id="panel3" style="display:none">
+      <div class="card-icon">🔒</div>
+      <h2 class="card-title">Set New <span class="gradient-text">Password</span></h2>
+      <p class="card-sub">Choose a strong password. It must be at least 8 characters.</p>
+
+      <div class="form-msg" id="msg3"></div>
+
+      <div class="form-group">
+        <label class="form-label">New Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" class="form-input" id="newPass" placeholder="Min. 8 characters" oninput="checkStrength(this.value)" />
+          <button type="button" class="pass-toggle" onclick="togglePass('newPass',this)">Show</button>
+        </div>
+        <div class="strength-wrap">
+          <div class="strength-bar">
+            <div class="strength-seg" id="seg1"></div>
+            <div class="strength-seg" id="seg2"></div>
+            <div class="strength-seg" id="seg3"></div>
+            <div class="strength-seg" id="seg4"></div>
+          </div>
+          <span class="strength-label" id="strengthLabel">Enter a password</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirm New Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" class="form-input" id="confirmPass" placeholder="Repeat new password" />
+          <button type="button" class="pass-toggle" onclick="togglePass('confirmPass',this)">Show</button>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="resetBtn" onclick="resetPassword()">Reset Password</button>
+    </div>
+
+    <!-- ── PANEL 4: Success ── -->
+    <div id="panel4" class="success-screen">
+      <div class="success-icon">🎉</div>
+      <h2 class="success-title">Password <span class="gradient-text">Reset!</span></h2>
+      <p class="success-desc">Your password has been updated successfully. You can now sign in with your new password.</p>
+      <a href="login.html" class="btn-go">Go to Sign In →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer class="auth-footer">© 2025 SabeenTech · SmartFinance Hub · All rights reserved</footer>
+
+<script>
+// ── PARTICLES ──
+(function(){
+  const c=document.getElementById('particles'),ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function r(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  r();window.addEventListener('resize',r);
+  const CL=['rgba(108,99,255,','rgba(0,201,167,'];
+  class P{constructor(){this.re();}re(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.4+.4;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.a=Math.random()*.35+.1;this.c=CL[Math.floor(Math.random()*CL.length)];}up(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.re();}dr(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=this.c+this.a+')';ctx.fill();}}
+  for(let i=0;i<50;i++)pts.push(new P());
+  function loop(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.up();p.dr();});requestAnimationFrame(loop);}
+  loop();
+})();
+
+// ── STATE ──
+let generatedOTP = '';
+let userEmail = '';
+let timerInterval = null;
+
+// ── STEP NAVIGATION ──
+function goToStep(n){
+  [1,2,3].forEach(i=>{
+    const d=document.getElementById('d'+i);
+    if(i<n){d.className='rst-dot done';d.textContent='✓';}
+    else if(i===n){d.className='rst-dot active';d.textContent=i;}
+    else{d.className='rst-dot';d.textContent=i;}
+  });
+  [1,2].forEach(i=>{
+    document.getElementById('rl'+i).className='rst-line'+(i<n?' done':'');
+  });
+  ['panel1','panel2','panel3','panel4'].forEach((id,i)=>{
+    document.getElementById(id).style.display=(i+1===n||id==='panel4'&&n===4)?'block':'none';
+  });
+}
+
+// ── SEND OTP ──
+function sendOTP(){
+  const email=document.getElementById('resetEmail').value.trim();
+  const msg=document.getElementById('msg1');
+  if(!email||!email.includes('@')){
+    msg.className='form-msg error show';
+    msg.textContent='Please enter a valid email address.';return;
+  }
+  userEmail=email;
+  generatedOTP=Math.floor(100000+Math.random()*900000).toString();
+  console.log('OTP (demo):', generatedOTP); // In production this goes to email
+  msg.className='form-msg success show';
+  msg.textContent='✓ Code sent! Check your email inbox.';
+  document.getElementById('otpDesc').textContent='We sent a 6-digit code to '+email+'. Enter it below.';
+  setTimeout(()=>{
+    goToStep(2);
+    startTimer();
+    document.getElementById('o1').focus();
+  },1000);
+}
+
+// ── OTP HELPERS ──
+function otpMove(el,nextId){
+  if(el.value&&nextId)document.getElementById(nextId).focus();
+}
+function otpBack(e,el,prevId){
+  if(e.key==='Backspace'&&!el.value&&prevId)document.getElementById(prevId).focus();
+}
+
+// ── VERIFY OTP ──
+function verifyOTP(){
+  const entered=['o1','o2','o3','o4','o5','o6'].map(id=>document.getElementById(id).value).join('');
+  const msg=document.getElementById('msg2');
+  if(entered.length<6){msg.className='form-msg error show';msg.textContent='Please enter all 6 digits.';return;}
+  if(entered===generatedOTP){
+    msg.className='form-msg success show';
+    msg.textContent='✓ Code verified!';
+    clearInterval(timerInterval);
+    setTimeout(()=>goToStep(3),800);
+  } else {
+    msg.className='form-msg error show';
+    msg.textContent='Incorrect code. Please check and try again.';
+    ['o1','o2','o3','o4','o5','o6'].forEach(id=>{document.getElementById(id).value='';});
+    document.getElementById('o1').focus();
+  }
+}
+
+// ── TIMER ──
+function startTimer(){
+  let t=30;
+  document.getElementById('resendBtn').disabled=true;
+  document.getElementById('timerTxt').style.display='inline';
+  document.getElementById('timerNum').textContent=t;
+  timerInterval=setInterval(()=>{
+    t--;
+    document.getElementById('timerNum').textContent=t;
+    if(t<=0){
+      clearInterval(timerInterval);
+      document.getElementById('resendBtn').disabled=false;
+      document.getElementById('timerTxt').style.display='none';
     }
+  },1000);
+}
 
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleReset();
+function resendOTP(){
+  generatedOTP=Math.floor(100000+Math.random()*900000).toString();
+  console.log('New OTP (demo):', generatedOTP);
+  const msg=document.getElementById('msg2');
+  msg.className='form-msg info show';
+  msg.textContent='New code sent to '+userEmail;
+  ['o1','o2','o3','o4','o5','o6'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('o1').focus();
+  startTimer();
+}
+
+// ── PASSWORD STRENGTH ──
+function checkStrength(v){
+  const segs=[document.getElementById('seg1'),document.getElementById('seg2'),document.getElementById('seg3'),document.getElementById('seg4')];
+  const label=document.getElementById('strengthLabel');
+  let score=0;
+  if(v.length>=8)score++;
+  if(/[A-Z]/.test(v))score++;
+  if(/[0-9]/.test(v))score++;
+  if(/[^A-Za-z0-9]/.test(v))score++;
+  const cls=['','weak','fair','good','strong'];
+  const lbl=['Enter a password','Weak','Fair','Good','Strong ✓'];
+  segs.forEach((s,i)=>{s.className='strength-seg'+(i<score?' '+cls[score]:'');});
+  label.textContent=lbl[score];
+}
+
+function togglePass(id,btn){
+  const inp=document.getElementById(id);
+  if(inp.type==='password'){inp.type='text';btn.textContent='Hide';}
+  else{inp.type='password';btn.textContent='Show';}
+}
+
+// ── RESET PASSWORD ──
+function resetPassword(){
+  const np=document.getElementById('newPass').value;
+  const cp=document.getElementById('confirmPass').value;
+  const msg=document.getElementById('msg3');
+  const btn=document.getElementById('resetBtn');
+  if(np.length<8){msg.className='form-msg error show';msg.textContent='Password must be at least 8 characters.';return;}
+  if(np!==cp){msg.className='form-msg error show';msg.textContent='Passwords do not match.';return;}
+  btn.textContent='Resetting...';btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('panel3').style.display='none';
+    document.getElementById('panel4').style.display='block';
+    [1,2,3].forEach(i=>{
+      const d=document.getElementById('d'+i);
+      d.className='rst-dot done';d.textContent='✓';
     });
-  </script>
+    [1,2].forEach(i=>document.getElementById('rl'+i).className='rst-line done');
+  },1200);
+}
+</script>
 </body>
 </html>
+
+
+You are out of free messages until 7:40 A
