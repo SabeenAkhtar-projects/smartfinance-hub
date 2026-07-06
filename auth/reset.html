@@ -74,4 +74,104 @@
     .error-message{
       background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
       color:#f87171;padding:10px 14px;border-radius:8px;
-      font-size:13px;margin-bottom:16px;displa
+      font-size:13px;margin-bottom:16px;display:none;
+    }
+    .success-box{
+      background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
+      border-radius:12px;padding:24px;text-align:center;display:none;
+    }
+    .success-box .success-icon{font-size:40px;margin-bottom:12px}
+    .success-box h3{color:#4ade80;font-size:18px;font-weight:600;margin-bottom:8px}
+    .success-box p{color:#86efac;font-size:14px;line-height:1.6}
+    .tips{
+      margin-top:16px;padding:16px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.07);
+      border-radius:10px;
+    }
+    .tips p{font-size:12px;color:#64748b;margin-bottom:6px}
+    .tips ul{list-style:none;padding:0}
+    .tips ul li{font-size:12px;color:#475569;padding:2px 0;padding-left:14px;position:relative}
+    .tips ul li::before{content:'•';position:absolute;left:0;color:#6366f1}
+    .back-link{text-align:center;margin-top:20px;font-size:14px;color:#64748b}
+    .back-link a{color:#6366f1;text-decoration:none;font-weight:600}
+    .back-link a:hover{color:#818cf8}
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-logo">
+      <a href="../index.html">
+        <div class="logo-icon">💰</div>
+        <span class="logo-text">SmartFinance <span>Hub</span></span>
+      </a>
+    </div>
+    <div class="auth-card">
+      <div class="icon-circle">🔑</div>
+      <h1 class="auth-title">Forgot Password?</h1>
+      <p class="auth-subtitle">No worries! Enter your email and we'll send you a reset link.</p>
+
+      <div class="error-message" id="errorMsg"></div>
+
+      <!-- Form (shown first) -->
+      <div id="formSection">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+        <button class="btn-primary" onclick="handleReset()">Send Reset Link</button>
+        <a href="login.html" class="btn-secondary">← Back to Login</a>
+
+        <div class="tips">
+          <p><strong style="color:#64748b">💡 Tips:</strong></p>
+          <ul>
+            <li>Check your spam or junk folder</li>
+            <li>Make sure you used the right email</li>
+            <li>Link expires after 30 minutes</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Success box (shown after submit) -->
+      <div class="success-box" id="successBox">
+        <div class="success-icon">📬</div>
+        <h3>Check Your Inbox!</h3>
+        <p>A password reset link has been sent to <strong id="sentEmail" style="color:#4ade80"></strong></p>
+        <p style="margin-top:8px;font-size:13px;color:#64748b">Didn't get it? Check your spam folder or try again.</p>
+      </div>
+
+      <div class="back-link">
+        Remember your password? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleReset() {
+      const email = document.getElementById('email').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+
+      if (!email) {
+        errorMsg.textContent = 'Please enter your email address.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      if (!email.includes('@') || !email.includes('.')) {
+        errorMsg.textContent = 'Please enter a valid email address.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Show success (backend email will be wired in Day 5)
+      document.getElementById('sentEmail').textContent = email;
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleReset();
+    });
+  </script>
+</body>
+</html>
