@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — SmartFinance Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;display:flex}
+
+    /* SIDEBAR */
+    .sidebar{
+      width:260px;min-height:100vh;
+      background:rgba(255,255,255,0.04);
+      border-right:1px solid rgba(255,255,255,0.08);
+      padding:24px 0;display:flex;flex-direction:column;
+      position:fixed;top:0;left:0;z-index:100;
+    }
+    .sidebar-logo{
+      display:flex;align-items:center;gap:10px;
+      padding:0 20px 24px;
+      border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:20px;
+    }
+    .logo-icon{
+      width:38px;height:38px;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;
+    }
+    .logo-text{font-size:16px;font-weight:700;color:#fff}
+    .logo-text span{color:#6366f1}
+
+    .nav-section{padding:0 12px;margin-bottom:8px}
+    .nav-label{font-size:10px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:6px}
+    .nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:10px 12px;border-radius:10px;
+      color:#94a3b8;font-size:14px;font-weight:500;
+      cursor:pointer;transition:all 0.2s;text-decoration:none;margin-bottom:2px;
+    }
+    .nav-item:hover{background:rgba(255,255,255,0.06);color:#e2e8f0}
+    .nav-item.active{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.2));color:#a5b4fc;border:1px solid rgba(99,102,241,0.3)}
+    .nav-icon{font-size:18px;width:20px;text-align:center}
+
+    .sidebar-bottom{margin-top:auto;padding:12px}
+    .user-card{
+      display:flex;align-items:center;gap:10px;padding:12px;
+      background:rgba(255,255,255,0.04);border-radius:12px;
+      border:1px solid rgba(255,255,255,0.07);
+    }
+    .user-avatar{
+      width:36px;height:36px;border-radius:50%;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;
+    }
+    .user-name{font-size:13px;font-weight:600;color:#e2e8f0}
+    .user-plan{font-size:11px;color:#64748b}
+
+    /* MAIN */
+    .main{margin-left:260px;flex:1;padding:28px;min-height:100vh}
+
+    /* TOP BAR */
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;
+    }
+    .page-title h1{font-size:22px;font-weight:700;color:#fff}
+    .page-title p{font-size:14px;color:#64748b;margin-top:2px}
+    .topbar-actions{display:flex;align-items:center;gap:12px}
+    .btn-add{
+      padding:10px 18px;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      color:#fff;border:none;border-radius:10px;
+      font-size:14px;font-weight:600;cursor:pointer;
+      font-family:'Inter',sans-serif;
+    }
+    .btn-add:hover{opacity:0.9}
+    .notif-btn{
+      width:38px;height:38px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+      border-radius:10px;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;font-size:16px;
+    }
+
+    /* STATS CARDS */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .stat-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;padding:20px;
+    }
+    .stat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .stat-label{font-size:13px;color:#64748b;font-weight:500}
+    .stat-icon{
+      width:36px;height:36px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;font-size:16px;
+    }
+    .stat-value{font-size:26px;font-weight:700;color:#fff;margin-bottom:6px}
+    .stat-change{font-size:12px;display:flex;align-items:center;gap:4px}
+    .stat-change.up{color:#4ade80}
+    .stat-change.down{color:#f87171}
+
+    /* CHARTS ROW */
+    .charts-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+    .card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;padding:20px;
+    }
+    .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .card-title{font-size:15px;font-weight:600;color:#fff}
+    .card-badge{
+      font-size:11px;padding:4px 10px;
+      background:rgba(99,102,241,0.15);
+      color:#a5b4fc;border-radius:20px;
+    }
+
+    /* Fake Bar Chart */
+    .bar-chart{display:flex;align-items:flex-end;gap:8px;height:120px}
+    .bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .bar-wrap{width:100%;display:flex;gap:3px;align-items:flex-end;height:100px}
+    .bar{
+      flex:1;border-radius:4px 4px 0 0;
+      transition:height 0.5s ease;min-width:8px;
+    }
+    .bar.income{background:linear-gradient(180deg,#6366f1,#4f46e5)}
+    .bar.expense{background:linear-gradient(180deg,#f43f5e,#e11d48)}
+    .bar-label{font-size:10px;color:#475569}
+
+    /* Donut Chart */
+    .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+    .donut{position:relative;width:120px;height:120px}
+    .donut svg{transform:rotate(-90deg)}
+    .donut-center{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      text-align:center;
+    }
+    .donut-center .amount{font-size:16px;font-weight:700;color:#fff}
+    .donut-center .label{font-size:10px;color:#64748b}
+    .donut-legend{width:100%}
+    .legend-item{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .legend-left{display:flex;align-items:center;gap:8px;font-size:12px;color:#94a3b8}
+    .legend-dot{width:10px;height:10px;border-radius:50%}
+    .legend-pct{font-size:12px;font-weight:600;color:#e2e8f0}
+
+    /* BOTTOM ROW */
+    .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .transaction-item{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+    .transaction-item:last-child{border-bottom:none}
+    .tx-icon{
+      width:38px;height:38px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+    }
+    .tx-info{flex:1}
+    .tx-name{font-size:14px;font-weight:500;color:#e2e8f0}
+    .tx-date{font-size:11px;color:#64748b}
+    .tx-amount{font-size:14px;font-weight:600}
+    .tx-amount.income{color:#4ade80}
+    .tx-amount.expense{color:#f87171}
+
+    .goal-item{margin-bottom:16px}
+    .goal-header{display:flex;justify-content:space-between;margin-bottom:6px}
+    .goal-name{font-size:13px;font-weight:500;color:#e2e8f0}
+    .goal-pct{font-size:12px;color:#6366f1;font-weight:600}
+    .goal-bar{height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
+    .goal-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6)}
+    .goal-amounts{display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:#475569}
+
+    /* MOBILE */
+    .hamburger{display:none;font-size:22px;cursor:pointer;color:#94a3b8}
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%);transition:transform 0.3s}
+      .sidebar.open{transform:translateX(0)}
+      .main{margin-left:0;padding:16px}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .charts-row{grid-template-columns:1fr}
+      .bottom-row{grid-template-columns:1fr}
+      .hamburger{display:block}
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">💰</div>
+    <span class="logo-text">SmartFinance <span>Hub</span></span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Main</div>
+    <a class="nav-item active" href="index.html"><span class="nav-icon">📊</span> Dashboard</a>
+    <a class="nav-item" href="budget.html"><span class="nav-icon">💼</span> Budget Planner</a>
+    <a class="nav-item" href="savings.html"><span class="nav-icon">🎯</span> Savings Goals</a>
+    <a class="nav-item" href="bookkeeping.html"><span class="nav-icon">📒</span> Bookkeeping</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Learn & Grow</div>
+    <a class="nav-item" href="literacy.html"><span class="nav-icon">📚</span> Financial Literacy</a>
+    <a class="nav-item" href="ai-coach.html"><span class="nav-icon">🤖</span> AI Coach</a>
+    <a class="nav-item" href="reports.html"><span class="nav-icon">📈</span> Reports</a>
+    <a class="nav-item" href="health-score.html"><span class="nav-icon">❤️</span> Health Score</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Account</div>
+    <a class="nav-item" href="profile.html"><span class="nav-icon">👤</span> Profile</a>
+    <a class="nav-item" href="settings.html"><span class="nav-icon">⚙️</span> Settings</a>
+    <a class="nav-item" href="../auth/login.html" style="color:#f87171"><span class="nav-icon">🚪</span> Logout</a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <div class="user-avatar">S</div>
+      <div>
+        <div class="user-name">Sabeen Akhtar</div>
+        <div class="user-plan">Free Plan</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:16px">
+      <span class="hamburger" onclick="toggleSidebar()">☰</span>
+      <div class="page-title">
+        <h1>Good morning, Sabeen 👋</h1>
+        <p>Here's your financial overview for July 2026</p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="notif-btn">🔔</div>
+      <button class="btn-add" onclick="alert('Add transaction coming in Day 6!')">+ Add Transaction</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total Income</span>
+        <div class="stat-icon" style="background:rgba(34,197,94,0.15)">💵</div>
+      </div>
+      <div class="stat-value">PKR 85,000</div>
+      <div class="stat-change up">↑ 12% from last month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total Expenses</span>
+        <div class="stat-icon" style="background:rgba(244,63,94,0.15)">💸</div>
+      </div>
+      <div class="stat-value">PKR 52,400</div>
+      <div class="stat-change down">↑ 5% from last month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Savings</span>
+        <div class="stat-icon" style="background:rgba(99,102,241,0.15)">🏦</div>
+      </div>
+      <div class="stat-value">PKR 32,600</div>
+      <div class="stat-change up">↑ 8% from last month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Health Score</span>
+        <div class="stat-icon" style="background:rgba(234,179,8,0.15)">⭐</div>
+      </div>
+      <div class="stat-value">72/100</div>
+      <div class="stat-change up">↑ 4 pts this month</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="charts-row">
+    <!-- Bar Chart -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Income vs Expenses</span>
+        <span class="card-badge">Last 6 Months</span>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar income" style="height:60px"></div>
+            <div class="bar expense" style="height:45px"></div>
+          </div>
+          <span class="bar-label">Feb</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar income" style="height:70px"></div>
+            <div class="bar expense" style="height:50px"></div>
+          </div>
+          <span class="bar-label">Mar</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar income" style="height:65px"></div>
+            <div class="bar expense" style="height:55px"></div>
+          </div>
+          <span class="bar-label">Apr</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar income" style="height:80px"></div>
+            <div class="bar expense" style="height:48px"></div>
+          </div>
+          <span class="bar-label">May</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar income" style="height:75px"></div>
+            <div class="bar expense" style="height:52px"></div>
+          </div>
+          <span class="bar-label">Jun</span>
+        </div>
+        <div class="bar-group">
+          <div class="bar-wrap">
+            <div class="bar income" style="height:100px"></div>
+            <div class="bar expense" style="height:62px"></div>
+          </div>
+          <span class="bar-label">Jul</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:12px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#94a3b8">
+          <div style="width:10px;height:10px;border-radius:2px;background:#6366f1"></div> Income
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#94a3b8">
+          <div style="width:10px;height:10px;border-radius:2px;background:#f43f5e"></div> Expenses
+        </div>
+      </div>
+    </div>
+
+    <!-- Donut Chart -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Spending</span>
+        <span class="card-badge">July</span>
+      </div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="14"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#6366f1" stroke-width="14" stroke-dasharray="120 181" stroke-dashoffset="0"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#f43f5e" stroke-width="14" stroke-dasharray="72 229" stroke-dashoffset="-120"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#f59e0b" stroke-width="14" stroke-dasharray="54 247" stroke-dashoffset="-192"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#22c55e" stroke-width="14" stroke-dasharray="36 265" stroke-dashoffset="-246"/>
+          </svg>
+          <div class="donut-center">
+            <div class="amount">52.4K</div>
+            <div class="label">Total</div>
+          </div>
+        </div>
+        <div class="donut-legend" style="width:100%">
+          <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#6366f1"></div>Housing</div><span class="legend-pct">40%</span></div>
+          <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#f43f5e"></div>Food</div><span class="legend-pct">24%</span></div>
+          <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#f59e0b"></div>Transport</div><span class="legend-pct">18%</span></div>
+          <div class="legend-item"><div class="legend-left"><div class="legend-dot" style="background:#22c55e"></div>Other</div><span class="legend-pct">18%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+    <!-- Recent Transactions -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Recent Transactions</span>
+        <a href="bookkeeping.html" style="font-size:13px;color:#6366f1;text-decoration:none">View all</a>
+      </div>
+      <div class="transaction-item">
+        <div class="tx-icon" style="background:rgba(34,197,94,0.1)">💵</div>
+        <div class="tx-info"><div class="tx-name">Salary — July</div><div class="tx-date">Jul 1, 2026</div></div>
+        <span class="tx-amount income">+85,000</span>
+      </div>
+      <div class="transaction-item">
+        <div class="tx-icon" style="background:rgba(244,63,94,0.1)">🏠</div>
+        <div class="tx-info"><div class="tx-name">Rent Payment</div><div class="tx-date">Jul 2, 2026</div></div>
+        <span class="tx-amount expense">-21,000</span>
+      </div>
+      <div class="transaction-item">
+        <div class="tx-icon" style="background:rgba(244,63,94,0.1)">🛒</div>
+        <div class="tx-info"><div class="tx-name">Groceries</div><div class="tx-date">Jul 4, 2026</div></div>
+        <span class="tx-amount expense">-4,500</span>
+      </div>
+      <div class="transaction-item">
+        <div class="tx-icon" style="background:rgba(244,63,94,0.1)">🚗</div>
+        <div class="tx-info"><div class="tx-name">Fuel</div><div class="tx-date">Jul 5, 2026</div></div>
+        <span class="tx-amount expense">-3,200</span>
+      </div>
+      <div class="transaction-item">
+        <div class="tx-icon" style="background:rgba(99,102,241,0.1)">💰</div>
+        <div class="tx-info"><div class="tx-name">Savings Transfer</div><div class="tx-date">Jul 5, 2026</div></div>
+        <span class="tx-amount income">+10,000</span>
+      </div>
+    </div>
+
+    <!-- Savings Goals -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Savings Goals</span>
+        <a href="savings.html" style="font-size:13px;color:#6366f1;text-decoration:none">Manage</a>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">🚨 Emergency Fund</span><span class="goal-pct">65%</span></div>
+        <div class="goal-bar"><div class="goal-fill" style="width:65%"></div></div>
+        <div class="goal-amounts"><span>PKR 65,000</span><span>PKR 100,000</span></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">💻 New Laptop</span><span class="goal-pct">40%</span></div>
+        <div class="goal-bar"><div class="goal-fill" style="width:40%"></div></div>
+        <div class="goal-amounts"><span>PKR 30,000</span><span>PKR 75,000</span></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">✈️ Travel Fund</span><span class="goal-pct">22%</span></div>
+        <div class="goal-bar"><div class="goal-fill" style="width:22%"></div></div>
+        <div class="goal-amounts"><span>PKR 11,000</span><span>PKR 50,000</span></div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-header"><span class="goal-name">📚 Education</span><span class="goal-pct">80%</span></div>
+        <div class="goal-bar"><div class="goal-fill" style="width:80%"></div></div>
+        <div class="goal-amounts"><span>PKR 40,000</span><span>PKR 50,000</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+</script>
+</body>
+</html>
