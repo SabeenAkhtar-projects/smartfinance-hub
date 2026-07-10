@@ -1,1 +1,573 @@
-<!-- Budget Planner -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Budget Planner — SmartFinance Hub</title>
+<link rel="manifest" href="../manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f172a;--surface:rgba(255,255,255,0.04);--surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.12);
+  --indigo:#6366f1;--violet:#8b5cf6;--indigo-soft:rgba(99,102,241,0.15);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--text4:#475569;
+  --green:#22c55e;--orange:#f97316;--red:#ef4444;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ORBS */
+.orb{position:fixed;border-radius:50%;filter:blur(120px);opacity:.15;pointer-events:none;z-index:0}
+.orb1{width:600px;height:600px;background:var(--indigo);top:-200px;right:-200px}
+.orb2{width:500px;height:500px;background:var(--violet);bottom:-150px;left:-150px}
+.orb3{width:280px;height:280px;background:#06b6d4;top:45%;left:45%}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(15,23,42,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 24px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--indigo),var(--violet));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px}
+.logo-text{font-size:18px;font-weight:700;color:#fff}
+.logo-text span{color:var(--indigo)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{padding:7px 13px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
+.nav-links a:hover,.nav-links a.active{background:var(--indigo-soft);color:var(--indigo)}
+.nav-cta{display:flex;gap:10px}
+.btn-ghost{padding:8px 16px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:#cbd5e1;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:.2s}
+.btn-ghost:hover{background:var(--surface2)}
+.btn-primary-sm{padding:8px 16px;background:linear-gradient(135deg,var(--indigo),var(--violet));border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif}
+
+/* HERO */
+.page-hero{position:relative;z-index:1;padding:72px 24px 48px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.28);border-radius:24px;padding:6px 18px;font-size:13px;color:#a5b4fc;font-weight:500;margin-bottom:22px}
+.page-hero h1{font-size:clamp(32px,5vw,54px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.15;letter-spacing:-1px}
+.page-hero h1 span{background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{font-size:16px;color:var(--text2);max-width:520px;margin:0 auto;line-height:1.75}
+
+/* LAYOUT */
+.main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 24px 80px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px}
+.card-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--text3);margin-bottom:24px}
+
+/* INCOME SECTION */
+.sec-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--indigo);margin-bottom:10px}
+.sec-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+.sec-sub{font-size:14px;color:var(--text3);margin-bottom:28px}
+
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#cbd5e1;margin-bottom:8px}
+.form-group input,.form-group select{width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;color:#fff;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:.2s}
+.form-group input:focus,.form-group select:focus{border-color:var(--indigo);background:rgba(99,102,241,0.08)}
+.form-group input::placeholder{color:var(--text4)}
+.form-group select option{background:#1e293b}
+
+.btn-add{width:100%;padding:12px;background:var(--indigo-soft);border:1px solid rgba(99,102,241,0.3);border-radius:10px;color:#a5b4fc;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s;margin-top:4px}
+.btn-add:hover{background:var(--indigo);color:#fff}
+.btn-calc{width:100%;padding:13px;background:linear-gradient(135deg,var(--indigo),var(--violet));border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;transition:opacity .2s}
+.btn-calc:hover{opacity:.88}
+.btn-reset{width:100%;padding:11px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--text3);font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;transition:.2s}
+.btn-reset:hover{border-color:rgba(239,68,68,.4);color:#f87171}
+
+/* EXPENSE ROWS */
+.expense-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.expense-row{display:flex;gap:10px;align-items:center}
+.expense-row input{flex:1;padding:10px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:#fff;font-size:13px;font-family:'Inter',sans-serif;outline:none;transition:.2s}
+.expense-row input:focus{border-color:var(--indigo)}
+.expense-row input::placeholder{color:var(--text4)}
+.expense-row .amt{width:130px;flex-shrink:0}
+.btn-remove{width:32px;height:32px;border-radius:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;font-family:'Inter',sans-serif}
+.btn-remove:hover{background:rgba(239,68,68,0.25)}
+
+/* SUMMARY CARDS */
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;text-align:center}
+.stat-icon{font-size:28px;margin-bottom:10px}
+.stat-label{font-size:12px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.stat-value{font-size:26px;font-weight:800;color:#fff}
+.stat-value.green{color:#4ade80}
+.stat-value.red{color:#f87171}
+.stat-value.orange{color:#fb923c}
+
+/* DONUT */
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+.donut-container{position:relative;width:200px;height:200px}
+.donut-container svg{transform:rotate(-90deg)}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.donut-pct{font-size:28px;font-weight:800;color:#fff}
+.donut-lbl{font-size:12px;color:var(--text3)}
+.donut-legend{display:flex;flex-direction:column;gap:10px;width:100%}
+.legend-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.legend-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.legend-name{color:var(--text2);flex:1}
+.legend-val{color:#fff;font-weight:700}
+.legend-pct{color:var(--text3);font-size:12px}
+
+/* RULE BAR */
+.rule-bar-wrap{margin-top:8px}
+.rule-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.rule-label{font-size:13px;color:var(--text2);width:80px;flex-shrink:0}
+.rule-bar-bg{flex:1;height:10px;background:rgba(255,255,255,0.07);border-radius:5px;overflow:hidden}
+.rule-bar-fill{height:100%;border-radius:5px;transition:width .6s}
+.rule-target{font-size:12px;color:var(--text3);width:60px;text-align:right;flex-shrink:0}
+.rule-status{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.status-ok{background:rgba(34,197,94,.15);color:#4ade80}
+.status-warn{background:rgba(251,146,60,.15);color:#fb923c}
+.status-over{background:rgba(239,68,68,.15);color:#f87171}
+
+/* TIPS */
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.tip-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:18px}
+.tip-icon{font-size:22px;margin-bottom:8px}
+.tip-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.tip-text{font-size:12px;color:var(--text3);line-height:1.6}
+
+/* HISTORY */
+.history-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:12px}
+.hi-left{display:flex;align-items:center;gap:12px}
+.hi-icon{font-size:20px}
+.hi-name{font-size:14px;font-weight:600;color:#fff}
+.hi-cat{font-size:12px;color:var(--text3)}
+.hi-right{text-align:right}
+.hi-amt{font-size:15px;font-weight:700}
+.hi-amt.neg{color:#f87171}
+.hi-amt.pos{color:#4ade80}
+.hi-date{font-size:11px;color:var(--text3)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state .e-icon{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:14px;line-height:1.6}
+
+/* ALERT */
+.result-banner{padding:16px 20px;border-radius:14px;margin-bottom:24px;font-size:14px;font-weight:600;display:none;align-items:center;gap:10px}
+.rb-surplus{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#4ade80}
+.rb-deficit{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#f87171}
+.rb-balanced{background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.3);color:#a5b4fc}
+
+/* FOOTER */
+footer{position:relative;z-index:1;background:rgba(0,0,0,.3);border-top:1px solid var(--border);padding:28px 24px;text-align:center}
+.footer-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:12px}
+.footer-links a{color:var(--text3);text-decoration:none;font-size:13px;transition:.2s}
+.footer-links a:hover{color:var(--indigo)}
+.footer-copy{font-size:13px;color:#334155}
+
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+@media(max-width:768px){.nav-links,.nav-cta{display:none}.tips-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="logo-icon">💰</div>
+      <span class="logo-text">SmartFinance <span>Hub</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="learn.html">Learn</a>
+      <a href="budget.html" class="active">Budget</a>
+      <a href="savings.html">Savings</a>
+      <a href="score.html">Health Score</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="../auth/login.html" class="btn-ghost">Sign In</a>
+      <a href="../auth/signup.html" class="btn-primary-sm">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-badge">📊 Smart Budget Planner</div>
+  <h1>Plan Every Rupee.<br/><span>Own Your Money.</span></h1>
+  <p>Enter your income and expenses to get an instant budget breakdown, 50/30/20 analysis, and personalised tips.</p>
+</div>
+
+<div class="main">
+
+  <!-- RESULT BANNER -->
+  <div class="result-banner" id="resultBanner"></div>
+
+  <!-- SUMMARY STATS -->
+  <div class="grid-3" style="margin-bottom:28px" id="statsRow">
+    <div class="stat-card">
+      <div class="stat-icon">💵</div>
+      <div class="stat-label">Monthly Income</div>
+      <div class="stat-value" id="statIncome">PKR 0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💸</div>
+      <div class="stat-label">Total Expenses</div>
+      <div class="stat-value red" id="statExpenses">PKR 0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏦</div>
+      <div class="stat-label">Remaining / Savings</div>
+      <div class="stat-value green" id="statRemaining">PKR 0</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:28px">
+
+    <!-- LEFT: INPUT PANEL -->
+    <div>
+      <!-- INCOME -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="sec-label">Step 1</div>
+        <div class="card-title">Your Monthly Income</div>
+        <div class="card-sub">Enter all sources of income after tax</div>
+        <div class="form-group">
+          <label>Primary Income (Salary / Business)</label>
+          <input type="number" id="primaryIncome" placeholder="e.g. 80000" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Secondary Income (Freelance / Part-time)</label>
+          <input type="number" id="secondaryIncome" placeholder="e.g. 15000" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Other Income (Rent / Dividends)</label>
+          <input type="number" id="otherIncome" placeholder="e.g. 5000" min="0"/>
+        </div>
+      </div>
+
+      <!-- NEEDS -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="sec-label">Step 2 — Needs (50%)</div>
+        <div class="card-title">Essential Expenses</div>
+        <div class="card-sub">Things you cannot live without</div>
+        <div class="expense-list" id="needsList">
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Rent" value="Rent"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Groceries" value="Groceries"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Electricity" value="Utilities"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addRow('needsList')">+ Add Expense</button>
+      </div>
+
+      <!-- WANTS -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="sec-label">Step 3 — Wants (30%)</div>
+        <div class="card-title">Lifestyle Expenses</div>
+        <div class="card-sub">Things that improve your life but aren't essential</div>
+        <div class="expense-list" id="wantsList">
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Dining Out" value="Dining Out"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Subscriptions" value="Subscriptions"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addRow('wantsList')">+ Add Expense</button>
+      </div>
+
+      <!-- SAVINGS -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="sec-label">Step 4 — Savings (20%)</div>
+        <div class="card-title">Savings & Debt Payments</div>
+        <div class="card-sub">Money working for your future</div>
+        <div class="expense-list" id="savingsList">
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Emergency Fund" value="Emergency Fund"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+          <div class="expense-row">
+            <input type="text" placeholder="e.g. Investment" value="Investment"/>
+            <input type="number" class="amt" placeholder="Amount" min="0"/>
+            <button class="btn-remove" onclick="removeRow(this)">×</button>
+          </div>
+        </div>
+        <button class="btn-add" onclick="addRow('savingsList')">+ Add Item</button>
+      </div>
+
+      <button class="btn-calc" onclick="calculate()">📊 Calculate My Budget</button>
+      <button class="btn-reset" onclick="resetAll()">↺ Reset Everything</button>
+    </div>
+
+    <!-- RIGHT: RESULTS PANEL -->
+    <div>
+      <!-- DONUT CHART -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-title">Budget Breakdown</div>
+        <div class="card-sub">Where your money goes each month</div>
+        <div class="donut-wrap">
+          <div class="donut-container">
+            <svg width="200" height="200" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="75" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="28"/>
+              <circle id="donutNeeds"   cx="100" cy="100" r="75" fill="none" stroke="#6366f1" stroke-width="28" stroke-dasharray="0 471" stroke-linecap="round"/>
+              <circle id="donutWants"   cx="100" cy="100" r="75" fill="none" stroke="#8b5cf6" stroke-width="28" stroke-dasharray="0 471" stroke-linecap="round"/>
+              <circle id="donutSavings" cx="100" cy="100" r="75" fill="none" stroke="#22c55e" stroke-width="28" stroke-dasharray="0 471" stroke-linecap="round"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-pct" id="donutPct">—</div>
+              <div class="donut-lbl">Savings %</div>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#6366f1"></div>
+              <span class="legend-name">Needs</span>
+              <span class="legend-val" id="legNeeds">PKR 0</span>
+              <span class="legend-pct" id="legNeedsPct">(0%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#8b5cf6"></div>
+              <span class="legend-name">Wants</span>
+              <span class="legend-val" id="legWants">PKR 0</span>
+              <span class="legend-pct" id="legWantsPct">(0%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#22c55e"></div>
+              <span class="legend-name">Savings</span>
+              <span class="legend-val" id="legSavings">PKR 0</span>
+              <span class="legend-pct" id="legSavingsPct">(0%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#f97316"></div>
+              <span class="legend-name">Remaining</span>
+              <span class="legend-val" id="legRemaining">PKR 0</span>
+              <span class="legend-pct" id="legRemainingPct">(0%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 50/30/20 CHECK -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-title">50/30/20 Rule Check</div>
+        <div class="card-sub">How your budget compares to the recommended split</div>
+        <div class="rule-bar-wrap">
+          <div class="rule-row">
+            <span class="rule-label">Needs</span>
+            <div class="rule-bar-bg"><div class="rule-bar-fill" id="barNeeds" style="width:0%;background:#6366f1"></div></div>
+            <span class="rule-target">Target 50%</span>
+            <span class="rule-status" id="statusNeeds">—</span>
+          </div>
+          <div class="rule-row">
+            <span class="rule-label">Wants</span>
+            <div class="rule-bar-bg"><div class="rule-bar-fill" id="barWants" style="width:0%;background:#8b5cf6"></div></div>
+            <span class="rule-target">Target 30%</span>
+            <span class="rule-status" id="statusWants">—</span>
+          </div>
+          <div class="rule-row">
+            <span class="rule-label">Savings</span>
+            <div class="rule-bar-bg"><div class="rule-bar-fill" id="barSavings" style="width:0%;background:#22c55e"></div></div>
+            <span class="rule-target">Target 20%</span>
+            <span class="rule-status" id="statusSavings">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUDGET TIPS -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-title">💡 Smart Budget Tips</div>
+        <div class="card-sub">Personalised advice based on your numbers</div>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-icon">🛒</div>
+            <div class="tip-title">Plan Your Groceries</div>
+            <div class="tip-text">A weekly grocery list reduces spending by 20–25%. Buy in bulk for staples like rice, lentils, and oil.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">📱</div>
+            <div class="tip-title">Audit Subscriptions</div>
+            <div class="tip-text">Cancel any subscription you haven't used in 30 days. That PKR 800/month = PKR 9,600 saved per year.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">⚡</div>
+            <div class="tip-title">Reduce Utility Bills</div>
+            <div class="tip-text">Turn off ACs when leaving rooms. Use energy-saver bulbs. Small habits save PKR 2,000–4,000 monthly.</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">🏦</div>
+            <div class="tip-title">Automate Savings</div>
+            <div class="tip-text">Set up an auto-transfer on payday. What leaves your account first is what you actually save.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT TRANSACTIONS -->
+      <div class="card">
+        <div class="card-title">Recent Transactions</div>
+        <div class="card-sub">Your latest recorded expenses</div>
+        <div class="history-list">
+          <div class="history-item">
+            <div class="hi-left"><span class="hi-icon">🏠</span><div><div class="hi-name">Rent Payment</div><div class="hi-cat">Needs · Housing</div></div></div>
+            <div class="hi-right"><div class="hi-amt neg">−PKR 25,000</div><div class="hi-date">Jul 1, 2025</div></div>
+          </div>
+          <div class="history-item">
+            <div class="hi-left"><span class="hi-icon">💼</span><div><div class="hi-name">Salary Received</div><div class="hi-cat">Income · Primary</div></div></div>
+            <div class="hi-right"><div class="hi-amt pos">+PKR 80,000</div><div class="hi-date">Jul 1, 2025</div></div>
+          </div>
+          <div class="history-item">
+            <div class="hi-left"><span class="hi-icon">🛒</span><div><div class="hi-name">Grocery Shopping</div><div class="hi-cat">Needs · Food</div></div></div>
+            <div class="hi-right"><div class="hi-amt neg">−PKR 8,500</div><div class="hi-date">Jun 30, 2025</div></div>
+          </div>
+          <div class="history-item">
+            <div class="hi-left"><span class="hi-icon">🍕</span><div><div class="hi-name">Restaurant Dinner</div><div class="hi-cat">Wants · Dining</div></div></div>
+            <div class="hi-right"><div class="hi-amt neg">−PKR 3,200</div><div class="hi-date">Jun 28, 2025</div></div>
+          </div>
+          <div class="history-item">
+            <div class="hi-left"><span class="hi-icon">💰</span><div><div class="hi-name">Emergency Fund</div><div class="hi-cat">Savings · Fund</div></div></div>
+            <div class="hi-right"><div class="hi-amt pos">+PKR 10,000</div><div class="hi-date">Jun 27, 2025</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="../index.html">Home</a><a href="learn.html">Learn</a><a href="budget.html">Budget</a>
+    <a href="savings.html">Savings</a><a href="score.html">Health Score</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2024 SmartFinance Hub by SabeenTech · Learn • Save • Track • Grow</div>
+</footer>
+
+<script>
+const fmt = n => 'PKR ' + Math.round(n).toLocaleString('en-PK');
+
+function addRow(listId) {
+  const list = document.getElementById(listId);
+  const row = document.createElement('div');
+  row.className = 'expense-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Expense name"/>
+    <input type="number" class="amt" placeholder="Amount" min="0"/>
+    <button class="btn-remove" onclick="removeRow(this)">×</button>`;
+  list.appendChild(row);
+}
+
+function removeRow(btn) {
+  btn.parentElement.remove();
+}
+
+function getListTotal(listId) {
+  const rows = document.querySelectorAll(`#${listId} .expense-row`);
+  let total = 0;
+  rows.forEach(r => {
+    const amt = parseFloat(r.querySelector('.amt').value) || 0;
+    total += amt;
+  });
+  return total;
+}
+
+function calculate() {
+  const income = (parseFloat(document.getElementById('primaryIncome').value)||0)
+               + (parseFloat(document.getElementById('secondaryIncome').value)||0)
+               + (parseFloat(document.getElementById('otherIncome').value)||0);
+
+  const needs   = getListTotal('needsList');
+  const wants   = getListTotal('wantsList');
+  const savings = getListTotal('savingsList');
+  const total   = needs + wants + savings;
+  const remaining = income - total;
+
+  // Stats
+  document.getElementById('statIncome').textContent    = fmt(income);
+  document.getElementById('statExpenses').textContent  = fmt(total);
+  document.getElementById('statRemaining').textContent = fmt(remaining);
+  document.getElementById('statRemaining').className   = 'stat-value ' + (remaining >= 0 ? 'green' : 'red');
+
+  // Banner
+  const banner = document.getElementById('resultBanner');
+  banner.style.display = 'flex';
+  if (remaining > 0) {
+    banner.className = 'result-banner rb-surplus';
+    banner.innerHTML = `✅ Great! You have a <strong>${fmt(remaining)} surplus</strong> this month. Consider moving it to savings.`;
+  } else if (remaining < 0) {
+    banner.className = 'result-banner rb-deficit';
+    banner.innerHTML = `⚠️ You're <strong>${fmt(Math.abs(remaining))} over budget</strong>. Review your wants to find savings.`;
+  } else {
+    banner.className = 'result-banner rb-balanced';
+    banner.innerHTML = `⚖️ Your budget is perfectly balanced — every rupee has a purpose!`;
+  }
+
+  // Donut
+  if (income > 0) {
+    const circ = 2 * Math.PI * 75;
+    const nPct = Math.min(needs/income,1);
+    const wPct = Math.min(wants/income,1);
+    const sPct = Math.min(savings/income,1);
+    const nLen = circ * nPct, wLen = circ * wPct, sLen = circ * sPct;
+    document.getElementById('donutNeeds').setAttribute('stroke-dasharray',   `${nLen} ${circ-nLen}`);
+    document.getElementById('donutWants').setAttribute('stroke-dasharray',   `${wLen} ${circ-wLen}`);
+    document.getElementById('donutWants').setAttribute('stroke-dashoffset',  -nLen);
+    document.getElementById('donutSavings').setAttribute('stroke-dasharray', `${sLen} ${circ-sLen}`);
+    document.getElementById('donutSavings').setAttribute('stroke-dashoffset',-(nLen+wLen));
+    document.getElementById('donutPct').textContent = income > 0 ? Math.round(savings/income*100)+'%' : '—';
+  }
+
+  // Legend
+  const pct = v => income > 0 ? '('+Math.round(v/income*100)+'%)' : '(0%)';
+  document.getElementById('legNeeds').textContent       = fmt(needs);
+  document.getElementById('legNeedsPct').textContent    = pct(needs);
+  document.getElementById('legWants').textContent       = fmt(wants);
+  document.getElementById('legWantsPct').textContent    = pct(wants);
+  document.getElementById('legSavings').textContent     = fmt(savings);
+  document.getElementById('legSavingsPct').textContent  = pct(savings);
+  document.getElementById('legRemaining').textContent   = fmt(Math.max(remaining,0));
+  document.getElementById('legRemainingPct').textContent= pct(Math.max(remaining,0));
+
+  // 50/30/20 bars
+  function setBar(barId, statusId, actual, target, color) {
+    const pct = income > 0 ? Math.round(actual/income*100) : 0;
+    document.getElementById(barId).style.width = Math.min(pct,100)+'%';
+    document.getElementById(barId).style.background = color;
+    const el = document.getElementById(statusId);
+    if (pct <= target) { el.textContent = '✓ '+pct+'%'; el.className='rule-status status-ok'; }
+    else if (pct <= target+10) { el.textContent = '~ '+pct+'%'; el.className='rule-status status-warn'; }
+    else { el.textContent = '↑ '+pct+'%'; el.className='rule-status status-over'; }
+  }
+  setBar('barNeeds',  'statusNeeds',   needs,   50, '#6366f1');
+  setBar('barWants',  'statusWants',   wants,   30, '#8b5cf6');
+  setBar('barSavings','statusSavings', savings, 20, '#22c55e');
+}
+
+function resetAll() {
+  ['primaryIncome','secondaryIncome','otherIncome'].forEach(id=>document.getElementById(id).value='');
+  ['needsList','wantsList','savingsList'].forEach(listId=>{
+    document.querySelectorAll(`#${listId} .amt`).forEach(i=>i.value='');
+  });
+  ['statIncome','statExpenses','statRemaining'].forEach(id=>document.getElementById(id).textContent='PKR 0');
+  document.getElementById('resultBanner').style.display='none';
+  document.getElementById('donutPct').textContent='—';
+  ['donutNeeds','donutWants','donutSavings'].forEach(id=>document.getElementById(id).setAttribute('stroke-dasharray','0 471'));
+  ['barNeeds','barWants','barSavings'].forEach(id=>document.getElementById(id).style.width='0%');
+  ['statusNeeds','statusWants','statusSavings'].forEach(id=>document.getElementById(id).textContent='—');
+  ['legNeeds','legWants','legSavings','legRemaining'].forEach(id=>document.getElementById(id).textContent='PKR 0');
+  ['legNeedsPct','legWantsPct','legSavingsPct','legRemainingPct'].forEach(id=>document.getElementById(id).textContent='(0%)');
+}
+</script>
+</body>
+</html>
