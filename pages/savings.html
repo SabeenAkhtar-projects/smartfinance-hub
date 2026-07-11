@@ -1,1 +1,256 @@
-<!-- Savings Goals -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Savings Goals — SmartFinance Hub</title>
+<link rel="manifest" href="../manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f172a;--s:rgba(255,255,255,0.04);--s2:rgba(255,255,255,0.07);--b:rgba(255,255,255,0.08);--b2:rgba(255,255,255,0.12);--ind:#6366f1;--vio:#8b5cf6;--cya:#06b6d4;--t:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--t4:#475569}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);opacity:.18;pointer-events:none;z-index:0}
+.orb1{width:600px;height:600px;background:var(--ind);top:-200px;right:-200px}
+.orb2{width:500px;height:500px;background:var(--vio);bottom:-150px;left:-150px}
+.orb3{width:300px;height:300px;background:var(--cya);top:50%;left:50%;transform:translate(-50%,-50%)}
+nav{position:sticky;top:0;z-index:200;background:rgba(15,23,42,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--b);padding:0 24px}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--ind),var(--vio));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px}
+.logo-text{font-size:18px;font-weight:700;color:#fff}.logo-text span{color:var(--ind)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{padding:7px 13px;border-radius:8px;text-decoration:none;color:var(--t2);font-size:14px;font-weight:500;transition:.2s}
+.nav-links a:hover,.nav-links a.active{background:rgba(99,102,241,.15);color:var(--ind)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn-ghost{padding:8px 16px;border:1px solid var(--b2);border-radius:8px;background:transparent;color:#cbd5e1;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:.2s}
+.btn-ghost:hover{background:var(--s2)}
+.btn-psm{padding:8px 16px;background:linear-gradient(135deg,var(--ind),var(--vio));border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;font-family:'Inter',sans-serif;transition:opacity .2s}
+.btn-psm:hover{opacity:.88}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}
+.hbg span{display:block;width:22px;height:2px;background:#cbd5e1;border-radius:2px}
+.mob{display:none;flex-direction:column;gap:4px;padding:12px 0;border-top:1px solid var(--b)}
+.mob a{padding:10px 16px;color:var(--t2);text-decoration:none;font-size:14px;border-radius:8px;transition:.2s}
+.mob a:hover{background:rgba(99,102,241,.1);color:var(--ind)}
+.mob.open{display:flex}
+.hero{padding:72px 24px 48px;text-align:center;position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.28);border-radius:24px;padding:6px 18px;font-size:13px;color:#a5b4fc;font-weight:500;margin-bottom:20px}
+.hero h1{font-size:clamp(32px,5vw,54px);font-weight:800;color:#fff;margin-bottom:14px;line-height:1.15;letter-spacing:-1px}
+.hero h1 span{background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:16px;color:var(--t2);max-width:540px;margin:0 auto;line-height:1.75}
+.sec{max-width:1200px;margin:0 auto;padding:0 24px 64px;position:relative;z-index:1}
+.sec-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+.sec-sub{font-size:14px;color:var(--t3);margin-bottom:28px}
+.sum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:48px}
+.sum-card{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:24px;text-align:center}
+.sum-icon{font-size:28px;margin-bottom:10px}
+.sum-val{font-size:26px;font-weight:800;color:#fff;margin-bottom:4px}
+.sum-label{font-size:13px;color:var(--t3)}
+.add-card{background:var(--s);border:1px solid var(--b);border-radius:20px;padding:32px;margin-bottom:40px}
+.frow{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:20px}
+.fg label{display:block;font-size:13px;font-weight:600;color:#cbd5e1;margin-bottom:8px}
+.fg input,.fg select{width:100%;padding:11px 14px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:#fff;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:.2s}
+.fg input:focus,.fg select:focus{border-color:var(--ind);background:rgba(99,102,241,.08)}
+.fg input::placeholder{color:var(--t4)}
+.fg select option{background:#1e293b}
+.btn-add{padding:12px 28px;background:linear-gradient(135deg,var(--ind),var(--vio));border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s}
+.btn-add:hover{opacity:.88}
+.goals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.gc{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:26px;transition:.2s}
+.gc:hover{border-color:rgba(99,102,241,.35)}
+.gc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.gc-left{display:flex;align-items:center;gap:12px}
+.gc-emoji{font-size:30px}
+.gc-name{font-size:17px;font-weight:700;color:#fff}
+.gc-cat{font-size:12px;color:var(--t3);margin-top:3px}
+.gc-acts{display:flex;gap:8px}
+.bicon{width:32px;height:32px;border-radius:8px;border:1px solid var(--b2);background:var(--s2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.bicon:hover{background:rgba(99,102,241,.2);border-color:var(--ind)}
+.gc-amounts{display:flex;align-items:baseline;gap:6px;margin-bottom:12px}
+.gc-saved{font-size:26px;font-weight:800;color:#fff}
+.gc-target{font-size:14px;color:var(--t3)}
+.gc-bar-w{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.gc-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--ind),var(--vio));transition:width .6s}
+.gc-bar.done{background:linear-gradient(90deg,#22c55e,#16a34a)}
+.gc-foot{display:flex;justify-content:space-between;font-size:12px;color:var(--t3)}
+.gc-pct{font-weight:700;color:#a5b4fc}
+.gc-pct.cdone{color:#4ade80}
+.gc-hint{margin-top:14px;padding-top:14px;border-top:1px solid var(--b);font-size:13px;color:var(--t3)}
+.gc-hint strong{color:var(--t)}
+.bdone{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(34,197,94,.15);color:#4ade80;font-weight:700;margin-left:8px}
+.empty{text-align:center;padding:64px 24px;color:var(--t3);grid-column:1/-1}
+.empty-icon{font-size:56px;margin-bottom:16px}
+.empty h3{font-size:18px;font-weight:700;color:var(--t2);margin-bottom:8px}
+.empty p{font-size:14px;line-height:1.65;max-width:360px;margin:0 auto}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:24px}
+.tip{background:var(--s);border:1px solid var(--b);border-radius:14px;padding:22px;transition:.2s}
+.tip:hover{border-color:rgba(99,102,241,.3)}
+.tip-icon{font-size:24px;margin-bottom:10px}
+.tip-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+.tip-text{font-size:13px;color:var(--t3);line-height:1.65}
+footer{position:relative;z-index:1;background:rgba(0,0,0,.3);border-top:1px solid var(--b);padding:32px 24px;text-align:center}
+.fl{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:14px}
+.fl a{color:var(--t3);text-decoration:none;font-size:13px;transition:.2s}
+.fl a:hover{color:var(--ind)}
+.fc{font-size:13px;color:#334155}
+@media(max-width:768px){.nav-links,.nav-cta{display:none}.hbg{display:flex}.goals-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><div class="logo-icon">💰</div><span class="logo-text">SmartFinance <span>Hub</span></span></a>
+    <div class="nav-links">
+      <a href="learn.html">Learn</a><a href="budget.html">Budget</a><a href="savings.html" class="active">Savings</a>
+      <a href="score.html">Health Score</a><a href="resources.html">Resources</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta"><a href="../auth/login.html" class="btn-ghost">Sign In</a><a href="../auth/signup.html" class="btn-psm">Get Started</a></div>
+    <div class="hbg" onclick="document.getElementById('mob').classList.toggle('open')"><span></span><span></span><span></span></div>
+  </div>
+  <div class="mob" id="mob">
+    <a href="learn.html">Learn</a><a href="budget.html">Budget</a><a href="savings.html">Savings</a>
+    <a href="score.html">Health Score</a><a href="resources.html">Resources</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+    <a href="../auth/login.html">Sign In</a><a href="../auth/signup.html" style="color:#818cf8;font-weight:700">Get Started →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">💰 Savings Goals Tracker</div>
+  <h1>Build Your <span>Financial Future</span></h1>
+  <p>Set savings goals, track progress visually, and stay motivated until every single goal is achieved.</p>
+</div>
+
+<div class="sec">
+  <div class="sum-grid">
+    <div class="sum-card"><div class="sum-icon">🎯</div><div class="sum-val" id="sA">0</div><div class="sum-label">Active Goals</div></div>
+    <div class="sum-card"><div class="sum-icon">💵</div><div class="sum-val" id="sS">PKR 0</div><div class="sum-label">Total Saved</div></div>
+    <div class="sum-card"><div class="sum-icon">🏁</div><div class="sum-val" id="sT">PKR 0</div><div class="sum-label">Total Target</div></div>
+    <div class="sum-card"><div class="sum-icon">✅</div><div class="sum-val" id="sD">0</div><div class="sum-label">Completed</div></div>
+  </div>
+
+  <div class="add-card">
+    <div class="sec-title">➕ Add a New Goal</div>
+    <div class="sec-sub">Every big achievement starts with a clear, written target</div>
+    <div class="frow">
+      <div class="fg"><label>Goal Name</label><input type="text" id="gN" placeholder="e.g. Emergency Fund"/></div>
+      <div class="fg"><label>Category</label>
+        <select id="gC">
+          <option>🛡️ Emergency Fund</option><option>🎓 Education</option><option>💻 Technology</option>
+          <option>✈️ Travel</option><option>🚗 Vehicle</option><option>🏠 Home</option>
+          <option>📈 Investment</option><option>⭐ Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>Target Amount (PKR)</label><input type="number" id="gT" placeholder="100000" min="1"/></div>
+      <div class="fg"><label>Already Saved (PKR)</label><input type="number" id="gS" placeholder="0" min="0" value="0"/></div>
+      <div class="fg"><label>Target Date</label><input type="date" id="gD"/></div>
+      <div class="fg"><label>Monthly Contribution</label><input type="number" id="gM" placeholder="5000" min="0"/></div>
+    </div>
+    <button class="btn-add" onclick="addGoal()">+ Add Goal</button>
+  </div>
+
+  <div class="sec-title">My Savings Goals</div>
+  <div class="sec-sub" id="gsub">Add your first goal above to get started</div>
+  <div class="goals-grid" id="goalsGrid"></div>
+
+  <div style="margin-top:56px">
+    <div class="sec-title">💡 Smart Saving Tips</div>
+    <div class="sec-sub">Proven strategies to reach your goals faster</div>
+    <div class="tips-grid">
+      <div class="tip"><div class="tip-icon">🤖</div><div class="tip-title">Automate Your Savings</div><div class="tip-text">Set up an automatic transfer on payday so savings happen before you can spend. "Pay yourself first" is the golden rule of personal finance.</div></div>
+      <div class="tip"><div class="tip-icon">🎯</div><div class="tip-title">One Goal at a Time</div><div class="tip-text">Research shows focusing all extra money on one goal at a time produces faster results than splitting it across many simultaneously.</div></div>
+      <div class="tip"><div class="tip-icon">📅</div><div class="tip-title">Set a Real Deadline</div><div class="tip-text">Goals without deadlines are just wishes. A clear date creates urgency and makes your monthly target concrete and actionable.</div></div>
+      <div class="tip"><div class="tip-icon">🏦</div><div class="tip-title">Separate Account Per Goal</div><div class="tip-text">Open a dedicated savings account for each major goal. What's out of sight is out of mind — you won't accidentally spend it.</div></div>
+      <div class="tip"><div class="tip-icon">🎉</div><div class="tip-title">Celebrate Milestones</div><div class="tip-text">When you hit 25%, 50%, and 75% of a goal, acknowledge it. Progress recognition keeps motivation high for the final push.</div></div>
+      <div class="tip"><div class="tip-icon">📈</div><div class="tip-title">Increase Gradually</div><div class="tip-text">Every time you get a raise, direct 50% of the increase to savings goals. You won't miss money you never had a chance to spend.</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../index.html">Home</a><a href="learn.html">Learn</a><a href="budget.html">Budget</a>
+    <a href="savings.html">Savings</a><a href="score.html">Health Score</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="fc">© 2024 SmartFinance Hub by SabeenTech · Learn • Save • Track • Grow</div>
+</footer>
+
+<script>
+const CE={'🛡️ Emergency Fund':'🛡️','🎓 Education':'🎓','💻 Technology':'💻','✈️ Travel':'✈️','🚗 Vehicle':'🚗','🏠 Home':'🏠','📈 Investment':'📈','⭐ Other':'⭐'};
+let goals=JSON.parse(localStorage.getItem('sfh_goals')||'[]');
+if(!goals.length){
+  goals=[
+    {id:1,name:'Emergency Fund',cat:'🛡️ Emergency Fund',target:150000,saved:45000,date:'2025-06-30',monthly:10000},
+    {id:2,name:'New Laptop',cat:'💻 Technology',target:80000,saved:32000,date:'2024-12-31',monthly:8000},
+    {id:3,name:'Trip to Istanbul',cat:'✈️ Travel',target:200000,saved:200000,date:'2025-03-01',monthly:20000},
+  ];sv();
+}
+function sv(){localStorage.setItem('sfh_goals',JSON.stringify(goals));}
+function fmt(n){return 'PKR '+Number(n).toLocaleString();}
+function ml(d){if(!d)return null;const diff=new Date(d)-new Date();return Math.max(0,Math.ceil(diff/(1000*60*60*24*30)));}
+function addGoal(){
+  const n=document.getElementById('gN').value.trim();
+  const c=document.getElementById('gC').value;
+  const t=parseFloat(document.getElementById('gT').value);
+  const s=parseFloat(document.getElementById('gS').value)||0;
+  const d=document.getElementById('gD').value;
+  const m=parseFloat(document.getElementById('gM').value)||0;
+  if(!n){alert('Please enter a goal name.');return;}
+  if(!t||t<=0){alert('Please enter a valid target amount.');return;}
+  goals.push({id:Date.now(),name:n,cat:c,target:t,saved:s,date:d,monthly:m});
+  sv();render();
+  ['gN','gT','gD','gM'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('gS').value='0';
+}
+function del(id){if(confirm('Remove this goal?')){goals=goals.filter(g=>g.id!==id);sv();render();}}
+function deposit(id){
+  const a=parseFloat(prompt('How much did you save? (PKR)'));
+  if(!a||a<=0)return;
+  const g=goals.find(x=>x.id===id);
+  if(g){g.saved=Math.min(g.saved+a,g.target);sv();render();}
+}
+function render(){
+  const ts=goals.reduce((a,g)=>a+g.saved,0);
+  const tt=goals.reduce((a,g)=>a+g.target,0);
+  const done=goals.filter(g=>g.saved>=g.target).length;
+  document.getElementById('sA').textContent=goals.filter(g=>g.saved<g.target).length;
+  document.getElementById('sS').textContent=fmt(ts);
+  document.getElementById('sT').textContent=fmt(tt);
+  document.getElementById('sD').textContent=done;
+  const grid=document.getElementById('goalsGrid');
+  if(!goals.length){
+    grid.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div><h3>No goals yet</h3><p>Add your first savings goal above and begin your journey to financial freedom.</p></div>`;
+    document.getElementById('gsub').textContent='Add your first goal above to get started';
+    return;
+  }
+  document.getElementById('gsub').textContent=goals.length+' goal'+(goals.length!==1?'s':'')+' being tracked';
+  grid.innerHTML=goals.map(g=>{
+    const pct=Math.min(100,Math.round((g.saved/g.target)*100));
+    const isDone=pct>=100;
+    const m=ml(g.date);
+    const needed=g.monthly||(m&&m>0?Math.ceil((g.target-g.saved)/m):0);
+    const emoji=CE[g.cat]||'⭐';
+    return `<div class="gc">
+      <div class="gc-head">
+        <div class="gc-left"><span class="gc-emoji">${emoji}</span>
+          <div><div class="gc-name">${g.name}${isDone?'<span class="bdone">✓ Done</span>':''}</div><div class="gc-cat">${g.cat}</div></div>
+        </div>
+        <div class="gc-acts">
+          ${!isDone?`<button class="bicon" onclick="deposit(${g.id})" title="Add savings">💵</button>`:''}
+          <button class="bicon" onclick="del(${g.id})" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="gc-amounts"><span class="gc-saved">${fmt(g.saved)}</span><span class="gc-target">of ${fmt(g.target)}</span></div>
+      <div class="gc-bar-w"><div class="gc-bar${isDone?' done':''}" style="width:${pct}%"></div></div>
+      <div class="gc-foot"><span class="gc-pct${isDone?' cdone':''}">${pct}% saved</span>
+        <span>${g.date?'By: '+g.date:m!==null?m+' months left':'No deadline'}</span></div>
+      ${!isDone&&needed>0?`<div class="gc-hint">💡 Save <strong>${fmt(needed)}/month</strong> to reach this goal on time</div>`:''}
+      ${isDone?`<div class="gc-hint">🎉 <strong>Goal achieved!</strong> Outstanding work!</div>`:''}
+    </div>`;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>
